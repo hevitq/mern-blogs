@@ -101,13 +101,18 @@ if (process.env.NODE_ENV === "development") {
   app.use(cors({ origin: `${process.env.CLIENT_URL}` }));
 }
 
+// /** NOTE: Apply cors for a certain router, for test cors*/
+// const corsOptions = {
+//   origin: 'http://localhost:8000',
+// }
+
 /**
  * Apply router to handle requests to the path in the server side
  * @param { String } path - the route path
  * @param { Router } router - Router handle for requests the route path
  * ? Server will monitor any request to these routes
  */
-app.use("/api", blogRoutes);
+app.use("/api", /** cors(corsOptions), */ blogRoutes);
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", categoryRoutes);
