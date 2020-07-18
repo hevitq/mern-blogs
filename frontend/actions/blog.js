@@ -32,7 +32,6 @@ export const createBlog = (blog, token) => {
     /** Config headers ways to send data to and receive data from server */
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`
     },
 
@@ -41,7 +40,7 @@ export const createBlog = (blog, token) => {
   })
   /** Send response data to the client */
   .then(response => {
-    return response.json();
+     return response.json();
   })
   /** Send error message to the client */
   .catch(err => console.log(err));
