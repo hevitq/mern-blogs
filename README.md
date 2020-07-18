@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ```css
 react-node-nextjs
 ├─ .gitignore
@@ -83,3 +84,6 @@ react-node-nextjs
 └─ take-notes.md
 
 ```
+=======
+# mern-blogs
+>>>>>>> 48468e3a4df9de52224942f0dd1d56a4fde34df2
