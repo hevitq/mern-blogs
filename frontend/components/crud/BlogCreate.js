@@ -356,22 +356,26 @@ const CreateBlog = ({ router }) => {
 
   /** Show error message */
   const showError = () => {
-    <div
-      className="alert alert-danger"
-      style={{ display: error ? "" : "none" }}
-    >
-      {error}
-    </div>;
+    return (
+      <div
+        className="alert alert-danger"
+        style={{ display: error ? "" : "none" }}
+      >
+        {error}
+      </div>
+    );
   };
 
   /** Show success message */
   const showSuccess = () => {
-    <div
+    return (
+      <div
       className="alert alert-success"
       style={{ display: success ? "" : "none" }}
     >
       {success}
-    </div>;
+    </div>
+    );
   };
 
   /**
