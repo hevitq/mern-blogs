@@ -19,9 +19,9 @@ Coming soon...
 
 ## Code style
 
-1. Sử dụng JSDoc để tạo các comment chuẩn.
-2. Sử dụng Prettier, ESLintrc để format và check lỗi code.
-3. Sử dụng Markdownlint để viết tài liệu markdown.
+1. Use [JSDoc](https://jsdoc.app/) to create standard comments.
+2. Use Prettier, ESLintrc to format and check error code.
+3. Use Markdownlint to write markdown documents.
 4. Updating...
 
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
