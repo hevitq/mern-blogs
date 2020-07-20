@@ -362,6 +362,10 @@ exports.listAllBlogsCategoriesTags = (req, res) => {
  * @param { Any } res - response from the server side
  */
 exports.read = (req, res) => {
+  /**
+   * Create slug name used to query blog
+   * Format by default: text-after-slugify
+   */
   const slug = req.params.slug.toLowerCase();
 
   /**
@@ -406,6 +410,10 @@ exports.read = (req, res) => {
  * @param { Any } res - response from the server side
  */
 exports.remove = (req, res) => {
+  /**
+   * Create slug name used to query blog
+   * Format by default: text-after-slugify
+   */
   const slug = req.params.slug.toLowerCase();
 
   /**
@@ -426,9 +434,121 @@ exports.remove = (req, res) => {
   });
 };
 
-/** Middleware allows make a request to update one blog resource */
+/**
+ * Middleware allows make a request to update one blog resource
+ * @param { Any } req - request from the client side application
+ * @param { Any } res - response from the server side
+ */
 exports.update = (req, res) => {
-  
+  /**
+   * Create slug name used to query category
+   * Format by default: text-after-slugify
+   */
+  const slug = req.params.slug.toLowerCase();
+
+  Blog.findOne({slug}).exec((err, oldBlog) => {
+    if(err) {
+      return res.status(400).json({
+        error: errorHandler(err)
+      });
+    };
+
+    /** Grab all the form data */
+    let form = new formidable.IncomingForm();
+
+    /** Keep file extensions (jpg, png...) */
+    form.keepExtensions = true;
+
+    /**
+     * Parse form data to grab all the data javascript object
+     * @arg { Object } req - request from the client side
+     * @arg { Func } func - callback hold on data parse request out
+     */
+    form.parse(req, (err, fields, files) => {
+      /** Send error message if parse files (image...) failed */
+      if (err) {
+        return res.status(400).json({
+          error: "Image could not upload",
+        });
+      }
+
+      /** 
+       * Grab old slug name to keep slug, even if you change blog title
+       * NOTE: Slug name indexed by Google hen publish the blog
+       */
+      let slugBeforeMerge = oldBlog.slug;
+
+      /**
+       * Grab the blog data after merging data changed
+       * @arg { Object } oldBlog - blog data before updating
+       * @arg { Fields } fields - fields taken from the client side
+       */
+      oldBlog = _.merge(oldBlog, fields);
+
+      /** Make sure keep old slug name  */
+      oldBlog.slug = slugBeforeMerge;
+
+      /**
+       * Destructuring (Extract) to grab all the fields from the form
+       * to create a new blog
+       */
+      const { body, desc, categories, tags } = fields;
+
+      //////////////////////////////////////////////////////////////////////////
+      // ! CUSTOMIZE BLOG VALIDATORS
+      // ? - Can't use express-validator to validate for not json data
+      //////////////////////////////////////////////////////////////////////////
+      /** Update excerpt and description when body changed */
+      if (body) {
+        /** Grab 320 characters from the body */
+        oldBlog.excerpt = smartTrim(body, 320, " ", " ...");
+
+        /** Grab 160 char from the body and trip html tags  */
+        oldBlog.desc = stripHtml(body.substring(0, 160));
+      };
+
+      /** Update categories when categories changed */
+      if (categories) {
+        /** Grab categories and split to generate an array */
+        oldBlog.categories = categories.split(',');
+      };
+
+      /** Update tags when tags changed */
+      if (tags) {
+        /** Grab tags and split to generate an array */
+        oldBlog.tags = tags.split(',');
+      };
+
+      //////////////////////////////////////////////////////////////////////////
+      // ! BLOG FILES
+      // ? Files properties to create a new blog (entry) from the editor
+      //////////////////////////////////////////////////////////////////////////
+      /** Make sure sending the photo not images or not anything */
+      if (files && files.photo) {
+        /** Limit photo size less than 1MB (1000000 bytes) */
+        if (files.photo.size >= 10000000) {
+          return res.status(400).json({
+            error: "Image should be less then 1mb in size",
+          });
+        };
+
+        /** Grab files photo data from file system */
+        oldBlog.photo.data = fs.readFileSync(files.photo.path);
+        oldBlog.photo.contentType = files.photo.type;
+      };
+
+      /** Request Model save blog information in the database */
+      oldBlog.save((err, result) => {
+        /** Send error message if save failed */
+        if (err) {
+          return res.status(400).json({
+            error: errorHandler(err),
+          });
+        };
+        res.json(result);
+      });
+    });
+  });
 };
 
 
