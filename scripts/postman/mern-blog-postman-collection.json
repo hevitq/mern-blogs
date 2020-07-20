@@ -1,12 +1,12 @@
 {
 	"info": {
-		"_postman_id": "2f97d009-0f6c-487e-aa64-41b3e2148e09",
-		"name": "vnProject",
+		"_postman_id": "8d562aef-a419-45f2-b0fa-62338bc60991",
+		"name": "projects",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "pz-nextjs",
+			"name": "mern-blogs",
 			"item": [
 				{
 					"name": "/api/signup",
@@ -29,10 +29,10 @@
 							}
 						},
 						"url": {
-							"raw": "{{ssl}}://{{localURL}}:{{serverPort}}/api/signup",
+							"raw": "{{ssl}}://{{clientURL}}:{{serverPort}}/api/signup",
 							"protocol": "{{ssl}}",
 							"host": [
-								"{{localURL}}"
+								"{{clientURL}}"
 							],
 							"port": "{{serverPort}}",
 							"path": [
@@ -40,7 +40,7 @@
 								"signup"
 							]
 						},
-						"description": "# API for signing up\r\n\r\n### Headers\r\n```js\r\nContent-Type: application/json;\r\n```\r\n\r\n### Body\r\n```json\r\n{\r\n    \"name\": \"hieuphong\",\r\n    \"email\": \"hieuphong@gmail.com\",\r\n    \"password\": \"123456\"\r\n}\r\n```"
+						"description": "# API for signing up"
 					},
 					"response": []
 				},
@@ -65,10 +65,10 @@
 							}
 						},
 						"url": {
-							"raw": "{{ssl}}://{{localURL}}:{{serverPort}}/api/signin",
+							"raw": "{{ssl}}://{{clientURL}}:{{serverPort}}/api/signin",
 							"protocol": "{{ssl}}",
 							"host": [
-								"{{localURL}}"
+								"{{clientURL}}"
 							],
 							"port": "{{serverPort}}",
 							"path": [
@@ -76,7 +76,7 @@
 								"signin"
 							]
 						},
-						"description": "# Api for signing in\r\n\r\n## Contructor\r\n\r\n### Headers\r\n```js\r\nContent-Type: application/json;\r\n```\r\n\r\n### Body\r\n```json\r\n{\r\n    \"email\": \"hieuphong@gmail.com\",\r\n    \"password\": \"123456\"\r\n}\r\n```"
+						"description": "# Api for signing in"
 					},
 					"response": []
 				},
@@ -107,7 +107,7 @@
 								{
 									"key": "photo",
 									"type": "file",
-									"src": "/I:/vnpPace/TieuBach.ID/HP-Album/MyAvatar/V0004_Background.jpg"
+									"src": "<ABSOLUTE IMAGES PATH>"
 								},
 								{
 									"key": "categories",
@@ -132,18 +132,17 @@
 							}
 						},
 						"url": {
-							"raw": "{{ssl}}://{{localURL}}:{{serverPort}}/api/blog",
+							"raw": "{{ssl}}://{{clientURL}}:{{serverPort}}/api/blog",
 							"protocol": "{{ssl}}",
 							"host": [
-								"{{localURL}}"
+								"{{clientURL}}"
 							],
 							"port": "{{serverPort}}",
 							"path": [
 								"api",
 								"blog"
 							]
-						},
-						"description": "# Api for signing in\r\n\r\n## Contructor\r\n\r\n### Headers\r\n```js\r\nContent-Type: application/json;\r\n```\r\n\r\n### Body\r\n```json\r\n{\r\n    \"email\": \"hieuphong@gmail.com\",\r\n    \"password\": \"123456\"\r\n}\r\n```"
+						}
 					},
 					"response": []
 				},
@@ -178,18 +177,17 @@
 							}
 						},
 						"url": {
-							"raw": "{{ssl}}://{{localURL}}:{{serverPort}}/api/blogs",
+							"raw": "{{ssl}}://{{clientURL}}:{{serverPort}}/api/blogs",
 							"protocol": "{{ssl}}",
 							"host": [
-								"{{localURL}}"
+								"{{clientURL}}"
 							],
 							"port": "{{serverPort}}",
 							"path": [
 								"api",
 								"blogs"
 							]
-						},
-						"description": "# Api for signing in\r\n\r\n## Contructor\r\n\r\n### Headers\r\n```js\r\nContent-Type: application/json;\r\n```\r\n\r\n### Body\r\n```json\r\n{\r\n    \"email\": \"hieuphong@gmail.com\",\r\n    \"password\": \"123456\"\r\n}\r\n```"
+						}
 					},
 					"response": []
 				},
@@ -221,18 +219,17 @@
 							}
 						},
 						"url": {
-							"raw": "{{ssl}}://{{localURL}}:{{serverPort}}/api/blogs-categories-tags",
+							"raw": "{{ssl}}://{{clientURL}}:{{serverPort}}/api/blogs-categories-tags",
 							"protocol": "{{ssl}}",
 							"host": [
-								"{{localURL}}"
+								"{{clientURL}}"
 							],
 							"port": "{{serverPort}}",
 							"path": [
 								"api",
 								"blogs-categories-tags"
 							]
-						},
-						"description": "# Api for signing in\r\n\r\n## Contructor\r\n\r\n### Headers\r\n```js\r\nContent-Type: application/json;\r\n```\r\n\r\n### Body\r\n```json\r\n{\r\n    \"email\": \"hieuphong@gmail.com\",\r\n    \"password\": \"123456\"\r\n}\r\n```"
+						}
 					},
 					"response": []
 				},
@@ -242,16 +239,22 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "Co",
+								"key": "Content-Length",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Brearer {{token}}",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
-							"raw": "{{ssl}}://{{localURL}}:{{serverPort}}/api/signout",
+							"raw": "{{ssl}}://{{clientURL}}:{{serverPort}}/api/signout",
 							"protocol": "{{ssl}}",
 							"host": [
-								"{{localURL}}"
+								"{{clientURL}}"
 							],
 							"port": "{{serverPort}}",
 							"path": [
@@ -280,18 +283,17 @@
 							}
 						],
 						"url": {
-							"raw": "{{ssl}}://{{localURL}}:{{serverPort}}/api/secret",
+							"raw": "{{ssl}}://{{clientURL}}:{{serverPort}}/api/secret",
 							"protocol": "{{ssl}}",
 							"host": [
-								"{{localURL}}"
+								"{{clientURL}}"
 							],
 							"port": "{{serverPort}}",
 							"path": [
 								"api",
 								"secret"
 							]
-						},
-						"description": "# API for protecting routes\r\n## Contructor\r\n### Headers\r\nContent-Type:application/json\r\n\r\nAuthorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWZjMWNmNDMzNGNlNDJkN2MwNzMwYmUiLCJpYXQiOjE1OTM2NTg2NzUsImV4cCI6MTU5Mzc0NTA3NX0.Rl29M5X1gn0U8fy_qrQOBZvrJ50NFa49hRj1Sx4GxNc"
+						}
 					},
 					"response": []
 				},
@@ -312,18 +314,17 @@
 							}
 						],
 						"url": {
-							"raw": "{{ssl}}://{{localURL}}:{{serverPort}}/api/profile",
+							"raw": "{{ssl}}://{{clientURL}}:{{serverPort}}/api/profile",
 							"protocol": "{{ssl}}",
 							"host": [
-								"{{localURL}}"
+								"{{clientURL}}"
 							],
 							"port": "{{serverPort}}",
 							"path": [
 								"api",
 								"profile"
 							]
-						},
-						"description": "# API for protecting routes\r\n## Contructor\r\n### Headers\r\nContent-Type:application/json\r\n\r\nAuthorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWZjMWNmNDMzNGNlNDJkN2MwNzMwYmUiLCJpYXQiOjE1OTM2NTg2NzUsImV4cCI6MTU5Mzc0NTA3NX0.Rl29M5X1gn0U8fy_qrQOBZvrJ50NFa49hRj1Sx4GxNc"
+						}
 					},
 					"response": []
 				},
@@ -348,18 +349,17 @@
 							"raw": "{\r\n    \"name\": \"cat two\"\r\n}"
 						},
 						"url": {
-							"raw": "{{ssl}}://{{localURL}}:{{serverPort}}/api/category",
+							"raw": "{{ssl}}://{{clientURL}}:{{serverPort}}/api/category",
 							"protocol": "{{ssl}}",
 							"host": [
-								"{{localURL}}"
+								"{{clientURL}}"
 							],
 							"port": "{{serverPort}}",
 							"path": [
 								"api",
 								"category"
 							]
-						},
-						"description": "# API for protecting routes\r\n## Contructor\r\n### Headers\r\nContent-Type:application/json\r\n\r\nAuthorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWZjMWNmNDMzNGNlNDJkN2MwNzMwYmUiLCJpYXQiOjE1OTM2NTg2NzUsImV4cCI6MTU5Mzc0NTA3NX0.Rl29M5X1gn0U8fy_qrQOBZvrJ50NFa49hRj1Sx4GxNc"
+						}
 					},
 					"response": []
 				},
@@ -384,18 +384,17 @@
 							"raw": "{\r\n    \"name\": \"tag one\"\r\n}"
 						},
 						"url": {
-							"raw": "{{ssl}}://{{localURL}}:{{serverPort}}/api/tag",
+							"raw": "{{ssl}}://{{clientURL}}:{{serverPort}}/api/tag",
 							"protocol": "{{ssl}}",
 							"host": [
-								"{{localURL}}"
+								"{{clientURL}}"
 							],
 							"port": "{{serverPort}}",
 							"path": [
 								"api",
 								"tag"
 							]
-						},
-						"description": "# API for protecting routes\r\n## Contructor\r\n### Headers\r\nContent-Type:application/json\r\n\r\nAuthorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWZjMWNmNDMzNGNlNDJkN2MwNzMwYmUiLCJpYXQiOjE1OTM2NTg2NzUsImV4cCI6MTU5Mzc0NTA3NX0.Rl29M5X1gn0U8fy_qrQOBZvrJ50NFa49hRj1Sx4GxNc"
+						}
 					},
 					"response": []
 				},
@@ -417,18 +416,17 @@
 							}
 						],
 						"url": {
-							"raw": "{{ssl}}://{{localURL}}:{{serverPort}}/api/categories",
+							"raw": "{{ssl}}://{{clientURL}}:{{serverPort}}/api/categories",
 							"protocol": "{{ssl}}",
 							"host": [
-								"{{localURL}}"
+								"{{clientURL}}"
 							],
 							"port": "{{serverPort}}",
 							"path": [
 								"api",
 								"categories"
 							]
-						},
-						"description": "# API for protecting routes\r\n## Contructor\r\n### Headers\r\nContent-Type:application/json\r\n\r\nAuthorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWZjMWNmNDMzNGNlNDJkN2MwNzMwYmUiLCJpYXQiOjE1OTM2NTg2NzUsImV4cCI6MTU5Mzc0NTA3NX0.Rl29M5X1gn0U8fy_qrQOBZvrJ50NFa49hRj1Sx4GxNc"
+						}
 					},
 					"response": []
 				},
@@ -450,18 +448,17 @@
 							}
 						],
 						"url": {
-							"raw": "{{ssl}}://{{localURL}}:{{serverPort}}/api/tags",
+							"raw": "{{ssl}}://{{clientURL}}:{{serverPort}}/api/tags",
 							"protocol": "{{ssl}}",
 							"host": [
-								"{{localURL}}"
+								"{{clientURL}}"
 							],
 							"port": "{{serverPort}}",
 							"path": [
 								"api",
 								"tags"
 							]
-						},
-						"description": "# API for protecting routes\r\n## Contructor\r\n### Headers\r\nContent-Type:application/json\r\n\r\nAuthorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWZjMWNmNDMzNGNlNDJkN2MwNzMwYmUiLCJpYXQiOjE1OTM2NTg2NzUsImV4cCI6MTU5Mzc0NTA3NX0.Rl29M5X1gn0U8fy_qrQOBZvrJ50NFa49hRj1Sx4GxNc"
+						}
 					},
 					"response": []
 				},
@@ -483,10 +480,10 @@
 							}
 						],
 						"url": {
-							"raw": "{{ssl}}://{{localURL}}:{{serverPort}}/api/category/cat-one",
+							"raw": "{{ssl}}://{{clientURL}}:{{serverPort}}/api/category/cat-one",
 							"protocol": "{{ssl}}",
 							"host": [
-								"{{localURL}}"
+								"{{clientURL}}"
 							],
 							"port": "{{serverPort}}",
 							"path": [
@@ -494,8 +491,7 @@
 								"category",
 								"cat-one"
 							]
-						},
-						"description": "# API for protecting routes\r\n## Contructor\r\n### Headers\r\nContent-Type:application/json\r\n\r\nAuthorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWZjMWNmNDMzNGNlNDJkN2MwNzMwYmUiLCJpYXQiOjE1OTM2NTg2NzUsImV4cCI6MTU5Mzc0NTA3NX0.Rl29M5X1gn0U8fy_qrQOBZvrJ50NFa49hRj1Sx4GxNc"
+						}
 					},
 					"response": []
 				},
@@ -517,10 +513,10 @@
 							}
 						],
 						"url": {
-							"raw": "{{ssl}}://{{localURL}}:{{serverPort}}/api/tag/tag-one",
+							"raw": "{{ssl}}://{{clientURL}}:{{serverPort}}/api/tag/tag-one",
 							"protocol": "{{ssl}}",
 							"host": [
-								"{{localURL}}"
+								"{{clientURL}}"
 							],
 							"port": "{{serverPort}}",
 							"path": [
@@ -528,8 +524,7 @@
 								"tag",
 								"tag-one"
 							]
-						},
-						"description": "# API for protecting routes\r\n## Contructor\r\n### Headers\r\nContent-Type:application/json\r\n\r\nAuthorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWZjMWNmNDMzNGNlNDJkN2MwNzMwYmUiLCJpYXQiOjE1OTM2NTg2NzUsImV4cCI6MTU5Mzc0NTA3NX0.Rl29M5X1gn0U8fy_qrQOBZvrJ50NFa49hRj1Sx4GxNc"
+						}
 					},
 					"response": []
 				},
@@ -550,10 +545,10 @@
 							}
 						],
 						"url": {
-							"raw": "{{ssl}}://{{localURL}}:{{serverPort}}/api/category/cat-two",
+							"raw": "{{ssl}}://{{clientURL}}:{{serverPort}}/api/category/cat-two",
 							"protocol": "{{ssl}}",
 							"host": [
-								"{{localURL}}"
+								"{{clientURL}}"
 							],
 							"port": "{{serverPort}}",
 							"path": [
@@ -561,8 +556,7 @@
 								"category",
 								"cat-two"
 							]
-						},
-						"description": "# API for protecting routes\r\n## Contructor\r\n### Headers\r\nContent-Type:application/json\r\n\r\nAuthorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWZjMWNmNDMzNGNlNDJkN2MwNzMwYmUiLCJpYXQiOjE1OTM2NTg2NzUsImV4cCI6MTU5Mzc0NTA3NX0.Rl29M5X1gn0U8fy_qrQOBZvrJ50NFa49hRj1Sx4GxNc"
+						}
 					},
 					"response": []
 				},
@@ -583,10 +577,10 @@
 							}
 						],
 						"url": {
-							"raw": "{{ssl}}://{{localURL}}:{{serverPort}}/api/tag/tag-two",
+							"raw": "{{ssl}}://{{clientURL}}:{{serverPort}}/api/tag/tag-two",
 							"protocol": "{{ssl}}",
 							"host": [
-								"{{localURL}}"
+								"{{clientURL}}"
 							],
 							"port": "{{serverPort}}",
 							"path": [
@@ -594,13 +588,98 @@
 								"tag",
 								"tag-two"
 							]
-						},
-						"description": "# API for protecting routes\r\n## Contructor\r\n### Headers\r\nContent-Type:application/json\r\n\r\nAuthorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWZjMWNmNDMzNGNlNDJkN2MwNzMwYmUiLCJpYXQiOjE1OTM2NTg2NzUsImV4cCI6MTU5Mzc0NTA3NX0.Rl29M5X1gn0U8fy_qrQOBZvrJ50NFa49hRj1Sx4GxNc"
+						}
 					},
 					"response": []
 				}
 			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjA2YWJjOThhNjJiMjUxMTQ2ZGZlMGUiLCJpYXQiOjE1OTUyMDIwODIsImV4cCI6MTU5NTI4ODQ4Mn0.sH7M5twsg5EFieDFZP2dMBD1pkS6Is966KRyrsY5-b8",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b4467ccd-9d6a-4e11-b0ad-3becef20c90e",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "946bc9c2-0187-40bc-91db-f96c444ec02d",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
 			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "5d9102ee-3ecd-4bb0-a151-951e56a7a273",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "c7030f63-70a0-4815-b8fa-8a7c744d7fe5",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "eadfcb2b-c9a8-406d-a62f-59b8a5dcb79e",
+			"key": "ssl",
+			"value": "https"
+		},
+		{
+			"id": "1c69db6d-9f9e-4855-a9b1-c3e5d2c69f9e",
+			"key": "clientURL",
+			"value": "localhost"
+		},
+		{
+			"id": "13ce4c8a-26d6-4850-99e8-a8dfef7a6079",
+			"key": "serverURL",
+			"value": "null"
+		},
+		{
+			"id": "36a15714-025a-4675-be12-0b5ee4689b94",
+			"key": "clientPort",
+			"value": "3000"
+		},
+		{
+			"id": "e2ab8543-695b-4109-a0d5-4ab2e97477b2",
+			"key": "serverPort",
+			"value": "8000"
+		},
+		{
+			"id": "03ea1d3f-7b68-420f-be52-b1ec170ac9f5",
+			"key": "token",
+			"value": "null"
 		}
 	],
 	"protocolProfileBehavior": {}

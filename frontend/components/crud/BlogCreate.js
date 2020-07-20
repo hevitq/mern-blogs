@@ -182,6 +182,7 @@ const CreateBlog = ({ router }) => {
        * Error: JWT expired error, can't fetch data
        */
       if (!data) return console.log("hieuphong: 401 Unauthorized");
+      console.log(data);
 
       if (data.error) {
         setValues({ ...values, error: data.error });
@@ -190,7 +191,7 @@ const CreateBlog = ({ router }) => {
           ...values,
           title: "",
           error: "",
-          success: "A new log titled '${data.title}' is created",
+          success: `A new log titled ${data.title} is created`,
         });
         setBody("");
         setCategories([]);

@@ -199,8 +199,8 @@ exports.create = (req, res) => {
 
 /**
  * Middleware allows make a request to get all blog resource
- * @param {*} req
- * @param {*} res
+ * @param { Any } req - request from the client side application
+ * @param { Any } res - response from the server side
  * @return blogs data
  */
 exports.list = (req, res) => {
@@ -230,14 +230,15 @@ exports.list = (req, res) => {
         error: errorHandler(err)
       });
     };
+    /** Send response data include blogs */
     res.json(data);
   });
 };
 
 /**
  * Middleware allows make a request to get blogs, categories and tags resource
- * @param {*} req
- * @param {*} res
+ * @param { Any } req - request from the client side application
+ * @param { Any } res - response from the server side
  * @return all blogs categories tags
  */
 exports.listAllBlogsCategoriesTags = (req, res) => {
@@ -355,19 +356,199 @@ exports.listAllBlogsCategoriesTags = (req, res) => {
   });
 };
 
-/** Middleware allows make a request to get one blog resource */
+/**
+ * Middleware allows make a request to get one blog resource
+ * @param { Any } req - request from the client side application
+ * @param { Any } res - response from the server side
+ */
 exports.read = (req, res) => {
-  
+  /**
+   * Create slug name used to query blog
+   * Format by default: text-after-slugify
+   */
+  const slug = req.params.slug.toLowerCase();
+
+  /**
+   * Request Blog model query one blog
+   * @param { String } slug * - blog slug name
+   */
+  Blog.findOne({slug})
+  /**
+   * Grab all fields "_id, name, slug" save to the "categories" property
+   * NOTE: categories: [{type: ObjectId, ref: "Category", required: true}]
+   */
+  .populate("categories", "_id name slug")
+
+  /**
+   * Grab all fields "_id, name, slug" save to the "tags" property
+   * NOTE: tags: [{type: ObjectId, ref: "Tag", required: true}]
+   */
+  .populate("tags", "_id name slug")
+
+  /**
+   * Grab all fields "_id, name, username" save to the "postedBy" property
+   * NOTE: postedBy: {type: ObjectId, ref: "User"}
+   */
+  .populate("postedBy", "_id name username")
+  .select("_id title body slug mtitle mdesc categories tags postedBy createdAt updatedAt")
+  .exec((err, data) => {
+    if(err) {
+      return res.json({
+        error: errorHandler(err)
+      });
+    };
+
+    /** Send response data include blog */
+    res.json(data);
+  });
+
 };
 
-/** Middleware allows make a request to delete one blog resource */
+/**
+ * Middleware allows make a request to delete one blog resource
+ * @param { Any } req - request from the client side application
+ * @param { Any } res - response from the server side
+ */
 exports.remove = (req, res) => {
+  /**
+   * Create slug name used to query blog
+   * Format by default: text-after-slugify
+   */
+  const slug = req.params.slug.toLowerCase();
+
+  /**
+   * Request Blog model delete one blog
+   * @param { String } slug * - blog slug name
+   */
+  Blog.findOneAndRemove({slug}).exec((err, data) => {
+    if(err) {
+      return res.json({
+        error: errorHandler(err)
+      });
+    };
   
+    /** Send success message to the client */
+    res.json({
+      message: "Blog deleted successfully."
+    });
+  });
 };
 
-/** Middleware allows make a request to update one blog resource */
+/**
+ * Middleware allows make a request to update one blog resource
+ * @param { Any } req - request from the client side application
+ * @param { Any } res - response from the server side
+ */
 exports.update = (req, res) => {
-  
+  /**
+   * Create slug name used to query category
+   * Format by default: text-after-slugify
+   */
+  const slug = req.params.slug.toLowerCase();
+
+  Blog.findOne({slug}).exec((err, oldBlog) => {
+    if(err) {
+      return res.status(400).json({
+        error: errorHandler(err)
+      });
+    };
+
+    /** Grab all the form data */
+    let form = new formidable.IncomingForm();
+
+    /** Keep file extensions (jpg, png...) */
+    form.keepExtensions = true;
+
+    /**
+     * Parse form data to grab all the data javascript object
+     * @arg { Object } req - request from the client side
+     * @arg { Func } func - callback hold on data parse request out
+     */
+    form.parse(req, (err, fields, files) => {
+      /** Send error message if parse files (image...) failed */
+      if (err) {
+        return res.status(400).json({
+          error: "Image could not upload",
+        });
+      }
+
+      /** 
+       * Grab old slug name to keep slug, even if you change blog title
+       * NOTE: Slug name indexed by Google hen publish the blog
+       */
+      let slugBeforeMerge = oldBlog.slug;
+
+      /**
+       * Grab the blog data after merging data changed
+       * @arg { Object } oldBlog - blog data before updating
+       * @arg { Fields } fields - fields taken from the client side
+       */
+      oldBlog = _.merge(oldBlog, fields);
+
+      /** Make sure keep old slug name  */
+      oldBlog.slug = slugBeforeMerge;
+
+      /**
+       * Destructuring (Extract) to grab all the fields from the form
+       * to create a new blog
+       */
+      const { body, desc, categories, tags } = fields;
+
+      //////////////////////////////////////////////////////////////////////////
+      // ! CUSTOMIZE BLOG VALIDATORS
+      // ? - Can't use express-validator to validate for not json data
+      //////////////////////////////////////////////////////////////////////////
+      /** Update excerpt and description when body changed */
+      if (body) {
+        /** Grab 320 characters from the body */
+        oldBlog.excerpt = smartTrim(body, 320, " ", " ...");
+
+        /** Grab 160 char from the body and trip html tags  */
+        oldBlog.desc = stripHtml(body.substring(0, 160));
+      };
+
+      /** Update categories when categories changed */
+      if (categories) {
+        /** Grab categories and split to generate an array */
+        oldBlog.categories = categories.split(',');
+      };
+
+      /** Update tags when tags changed */
+      if (tags) {
+        /** Grab tags and split to generate an array */
+        oldBlog.tags = tags.split(',');
+      };
+
+      //////////////////////////////////////////////////////////////////////////
+      // ! BLOG FILES
+      // ? Files properties to create a new blog (entry) from the editor
+      //////////////////////////////////////////////////////////////////////////
+      /** Make sure sending the photo not images or not anything */
+      if (files && files.photo) {
+        /** Limit photo size less than 1MB (1000000 bytes) */
+        if (files.photo.size >= 10000000) {
+          return res.status(400).json({
+            error: "Image should be less then 1mb in size",
+          });
+        };
+
+        /** Grab files photo data from file system */
+        oldBlog.photo.data = fs.readFileSync(files.photo.path);
+        oldBlog.photo.contentType = files.photo.type;
+      };
+
+      /** Request Model save blog information in the database */
+      oldBlog.save((err, result) => {
+        /** Send error message if save failed */
+        if (err) {
+          return res.status(400).json({
+            error: errorHandler(err),
+          });
+        };
+        res.json(result);
+      });
+    });
+  });
 };
 
 

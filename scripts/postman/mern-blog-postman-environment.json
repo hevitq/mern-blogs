@@ -1,0 +1,39 @@
+{
+	"id": "5ed4c293-04ad-4dad-ad0f-4f1ce51eedc1",
+	"name": "vnProject",
+	"values": [
+		{
+			"key": "localURL",
+			"value": "localhost",
+			"enabled": true
+		},
+		{
+			"key": "serverPort",
+			"value": "8000",
+			"enabled": true
+		},
+		{
+			"key": "clientPort",
+			"value": "3000",
+			"enabled": true
+		},
+		{
+			"key": "serverURL",
+			"value": "null",
+			"enabled": true
+		},
+		{
+			"key": "token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjA2YWJjOThhNjJiMjUxMTQ2ZGZlMGUiLCJpYXQiOjE1OTUwMzkxMzEsImV4cCI6MTU5NTEyNTUzMX0.Y2qAWZtOTtcoqiV7zyF6o9nds9bXTbPu3Vz7HOgGSAc",
+			"enabled": true
+		},
+		{
+			"key": "ssl",
+			"value": "https",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2020-07-19T23:25:03.563Z",
+	"_postman_exported_using": "Postman/7.28.0"
+}
