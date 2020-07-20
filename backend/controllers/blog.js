@@ -199,8 +199,8 @@ exports.create = (req, res) => {
 
 /**
  * Middleware allows make a request to get all blog resource
- * @param {*} req
- * @param {*} res
+ * @param { Any } req - request from the client side application
+ * @param { Any } res - response from the server side
  * @return blogs data
  */
 exports.list = (req, res) => {
@@ -230,14 +230,15 @@ exports.list = (req, res) => {
         error: errorHandler(err)
       });
     };
+    /** Send response data include blogs */
     res.json(data);
   });
 };
 
 /**
  * Middleware allows make a request to get blogs, categories and tags resource
- * @param {*} req
- * @param {*} res
+ * @param { Any } req - request from the client side application
+ * @param { Any } res - response from the server side
  * @return all blogs categories tags
  */
 exports.listAllBlogsCategoriesTags = (req, res) => {
@@ -355,14 +356,74 @@ exports.listAllBlogsCategoriesTags = (req, res) => {
   });
 };
 
-/** Middleware allows make a request to get one blog resource */
+/**
+ * Middleware allows make a request to get one blog resource
+ * @param { Any } req - request from the client side application
+ * @param { Any } res - response from the server side
+ */
 exports.read = (req, res) => {
-  
+  const slug = req.params.slug.toLowerCase();
+
+  /**
+   * Request Blog model query one blog
+   * @param { String } slug * - blog slug name
+   */
+  Blog.findOne({slug})
+  /**
+   * Grab all fields "_id, name, slug" save to the "categories" property
+   * NOTE: categories: [{type: ObjectId, ref: "Category", required: true}]
+   */
+  .populate("categories", "_id name slug")
+
+  /**
+   * Grab all fields "_id, name, slug" save to the "tags" property
+   * NOTE: tags: [{type: ObjectId, ref: "Tag", required: true}]
+   */
+  .populate("tags", "_id name slug")
+
+  /**
+   * Grab all fields "_id, name, username" save to the "postedBy" property
+   * NOTE: postedBy: {type: ObjectId, ref: "User"}
+   */
+  .populate("postedBy", "_id name username")
+  .select("_id title body slug mtitle mdesc categories tags postedBy createdAt updatedAt")
+  .exec((err, data) => {
+    if(err) {
+      return res.json({
+        error: errorHandler(err)
+      });
+    };
+
+    /** Send response data include blog */
+    res.json(data);
+  });
+
 };
 
-/** Middleware allows make a request to delete one blog resource */
+/**
+ * Middleware allows make a request to delete one blog resource
+ * @param { Any } req - request from the client side application
+ * @param { Any } res - response from the server side
+ */
 exports.remove = (req, res) => {
+  const slug = req.params.slug.toLowerCase();
+
+  /**
+   * Request Blog model delete one blog
+   * @param { String } slug * - blog slug name
+   */
+  Blog.findOneAndRemove({slug}).exec((err, data) => {
+    if(err) {
+      return res.json({
+        error: errorHandler(err)
+      });
+    };
   
+    /** Send success message to the client */
+    res.json({
+      message: "Blog deleted successfully."
+    });
+  });
 };
 
 /** Middleware allows make a request to update one blog resource */
