@@ -18,7 +18,15 @@ const {
 } = require("../controllers/auth");
 
 /** Subscriber allows receive blog resources from the Controller  */
-const { create, list, listAllBlogsCategoriesTags, read, remove, update } = require("../controllers/blog");
+const {
+  create,
+  list,
+  listAllBlogsCategoriesTags,
+  read,
+  remove,
+  update,
+  photo,
+} = require("../controllers/blog");
 
 ////////////////////////////////////////////////////////////////////////////////
 // !--------------------------IMPLEMENT ROUTER----------------------------------
@@ -40,6 +48,7 @@ router.post("/blogs-categories-tags", listAllBlogsCategoriesTags);
 router.get("/blog/:slug", read);
 router.delete("/blog/:slug", requireSignIn, authMiddleware, remove);
 router.put("/blog/:slug", requireSignIn, authMiddleware, update);
+router.get("/blog/photo/:slug", photo);
 
 ////////////////////////////////////////////////////////////////////////////////
 // !--------------------------PUBLIC MODULE---------------------------------
