@@ -545,10 +545,45 @@ exports.update = (req, res) => {
             error: errorHandler(err),
           });
         };
+
+        /** Get rid of photo from the response data */
+        result.photo = undefined;
+
+        /** Send blog data to the client */
         res.json(result);
       });
     });
   });
 };
 
+/**
+ * Middleware allows make a request to get photo
+ * @param { Any } req - request from the client side application
+ * @param { Any } res - response from the server side
+ * @return { Object } blog photo data
+ */
+exports.photo = (req, res) => {
+  /**
+   * Create slug name used to query blog
+   * Format by default: text-after-slugify
+   */
+  const slug = req.params.slug.toLowerCase();
 
+  /** Request Blog model query photo from a blog post */
+  Blog.findOne({slug})
+  .select("photo")
+  .exec((err, blog) => {
+    /** Response error if fetch data from MongoDB failed */
+    if(err || !blog) {
+      return res.status(400).json({
+        error: errorHandler(err)
+      });
+    };
+
+    /** Set content type (png, jpg...) for photo */
+    res.set("Content-Type", blog.photo.contentType);
+
+    /** Send photo data to the client */
+    return res.send(blog.photo.data);
+  });
+};

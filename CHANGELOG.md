@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.0] - - 2020-07-21
+
+### Added
+
+- Add reports for tracking learned progress by [@hevtiq](https://github.com/hevtiq).
+- Add functionality get blog photo by [@hevtiq](https://github.com/hevtiq).
+
+### Changed
+
+- Changed file log by [@hevtiq](https://github.com/hevtiq).
+
+### Fixed
+
 ## [1.0.0] - - 2020-07-20
 
 ### Added
