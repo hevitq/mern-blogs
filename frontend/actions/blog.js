@@ -45,3 +45,32 @@ export const createBlog = (blog, token) => {
   /** Send error message to the client */
   .catch(err => console.log(err));
 };
+
+/**
+ * Method to make a request to create a new blog
+ * @param { Object } blog - all content of blog (fields, files...)
+ * @param { String } token - the token to authenticate
+ * @return { Object } the response body
+ */
+export const listBlogsWithCategoriesAndTags = () => {
+  /**
+   * One get user information will return fetch
+   * @argument { String } URL - API to connect to the server side to fetch data
+   * @argument { Object } Object - Configuration when fetching
+   */
+  return fetch(`${API}/blogs-categories-tags`, {
+    /** Config method verbal to send data to the server */
+    method: "POST",
+
+    /** Config headers ways to send data to and receive data from server */
+    headers: {
+      Accept: "application/json",
+    },
+  })
+  /** Send response data to the client */
+  .then(response => {
+     return response.json();
+  })
+  /** Send error message to the client */
+  .catch(err => console.log(err));
+};

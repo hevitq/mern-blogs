@@ -476,7 +476,7 @@ exports.update = (req, res) => {
        * Grab old slug name to keep slug, even if you change blog title
        * NOTE: Slug name indexed by Google hen publish the blog
        */
-      let slugBeforeMerge = oldBlog.slug;
+      let slugBeforeMerge = oldBlog && oldBlog.slug;
 
       /**
        * Grab the blog data after merging data changed
