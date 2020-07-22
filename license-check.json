@@ -1,0 +1,13 @@
+{
+	"name": "",
+	"version": "",
+	"description": "",
+	"licenses": "",
+	"copyright": "",
+	"licenseFile": "none",
+  "licenseModified": "no",
+  "_scripts_": {
+    "_json_": "license-checker --customPath license-check.json --json --out license.json",
+    "_csv_": "license-checker --customPath license-check.json --csv --out license.csv"
+  }
+}
