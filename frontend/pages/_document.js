@@ -19,7 +19,7 @@ class MyDocument extends Document {
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.snow.min.css"/>
-        <link rel="stylesheet" href="../static/css/styles.css?version=1.4.6"/>
+        <link rel="stylesheet" href="../static/css/styles.css?version=1.4.8"/>
         <link rel="stylesheet" href="../static/css/customize.css"/>
         </Head>
         <body>

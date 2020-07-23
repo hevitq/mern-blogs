@@ -8,47 +8,17 @@ import { useState } from "react";
 
 import { listBlogsWithCategoriesAndTags } from "../../actions/blog";
 
-import { API } from "../../config";
-
-import renderHTML from "react-render-html";
-
-import moment from "moment";
+import Card from "../../components/blog/Card";
 
 const Blogs = ({ blogs, categories, tags, size }) => {
   const showAllBlogs = () => {
     return blogs.map((blog, index) => {
-      return <article key={index}>
-        <div className="lead pb-4">
-          <header>
-            <Link href={`/blogs/${blog.slug}`}>
-              <h2 className="display-4 pt-3 pb-3 font-weight-bold">
-                {blog.title}
-              </h2>
-            </Link>
-          </header>
-          <section>
-            <p className="mark ml-1 pt-2 pb-2">
-              Written by  { blog.postedBy.name } | Published {moment(blog.updatedAt).fromNow()}
-            </p>
-          </section>
-          <section>
-            <p>blog categories and tags</p>
-          </section>
-
-          <div className="row">
-            <div className="col-md-4">image</div>
-            <div className="col-md-8">
-              <section>
-                <div className="pb-3">{ renderHTML(blog.excerpt) }</div>
-                <Link className="btn btn-primary mt-2" href={`/blogs/${blog.slug}`}>
-                  Read more
-                </Link>
-              </section>
-            </div>
-          </div>
-        </div>
-        <hr/>
-      </article>
+      return (
+        <article key={index}>
+          <Card blog={blog} />
+          <hr/>
+        </article>
+      );
     });
   };
 
@@ -77,8 +47,22 @@ const Blogs = ({ blogs, categories, tags, size }) => {
   );
 };
 
+/**
+ * A static method request to get initial props to the server render a page
+ * @return data
+ * NOTE: getInitialProps can be used only on pages, not in components
+ */
 Blogs.getInitialProps = () => {
+  /** Invoke method to create a new blog */
   return listBlogsWithCategoriesAndTags().then(data => {
+    if (!data) {
+      return {
+        blogs: "Error",
+        categories: "Error",
+        tags: "Error",
+        size: "Error",
+      };
+    }
     if(data.error) {
       console.log(data.error);
     } else {
