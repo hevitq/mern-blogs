@@ -26,6 +26,7 @@ const {
   remove,
   update,
   photo,
+  listRelated,
 } = require("../controllers/blog");
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -49,6 +50,7 @@ router.get("/blog/:slug", read);
 router.delete("/blog/:slug", requireSignIn, authMiddleware, remove);
 router.put("/blog/:slug", requireSignIn, authMiddleware, update);
 router.get("/blog/photo/:slug", photo);
+router.post("/blogs/related", listRelated);
 
 ////////////////////////////////////////////////////////////////////////////////
 // !--------------------------PUBLIC MODULE---------------------------------

@@ -1,5 +1,5 @@
 /** Bring middleware from node_modules */
-const withCSS = require("@zeit/next-css");
+// const withCSS = require("@zeit/next-css");
 
 /**
  * Export some environment variables
@@ -11,11 +11,29 @@ const withCSS = require("@zeit/next-css");
  *            - true: when deploying to production
  * Should remove http:, https: in API to automatically grab it
  */
-module.exports = withCSS({
+// module.exports = withCSS({
+//   publicRuntimeConfig: {
+//     APP_NAME: "vnPace",
+//     API_DEVELOPMENT: "http://localhost:8000/api",
+//     API_PRODUCTION: "https://vnpace.dev/api",
+//     PRODUCTION: false,
+//     DOMAIN_DEVELOPMENT: "http://localhost:3000",
+//     DOMAIN_PRODUCTION: "https://vnpace.dev",
+//     FB_APP_ID: "745690912856073",
+//   }
+// });
+
+module.exports = {
+  experimental: {
+    css: true
+  },
   publicRuntimeConfig: {
-    APP_NAME: "SEOBLOG",
-    API_DEVELOPMENT: "//localhost:8000/api",
-    API_PRODUCTION: "//seoblog.com",
-    PRODUCTION: false
+    APP_NAME: "VNPACE",
+    API_DEVELOPMENT: "http://localhost:8000/api",
+    API_PRODUCTION: "https://vnpace.dev/api",
+    PRODUCTION: false,
+    DOMAIN_DEVELOPMENT: "http://localhost:3000",
+    DOMAIN_PRODUCTION: "https://vnpace.dev",
+    FB_APP_ID: "745690912856073",
   }
-});
+};
