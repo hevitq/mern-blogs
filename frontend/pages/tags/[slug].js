@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import Layout from "../../components/Layout";
 
-import { singleCategory } from "../../actions/category";
+import { singleTag } from "../../actions/tag";
 
 import { API, DOMAIN, APP_NAME, FB_APP_ID } from "../../config";
 
@@ -14,26 +14,26 @@ import moment from "moment";
 
 import Card from "../../components/blog/Card";
 
-const Category = ({category, blogs, query}) => {
+const Tag = ({tag, blogs, query}) => {
   const head = () => {
     return (
       <Head>
-        <title>{category.name} | {APP_NAME}</title>
+        <title>{tag.name} | {APP_NAME}</title>
         <meta
           name="description"
-          content={`Best programming tutorials on ${category.name}`}
+          content={`Best programming tutorials on ${tag.name}`}
         />
-        <link ref="canonical" href={`${DOMAIN}/categories/${query.slug}`} />
+        <link ref="canonical" href={`${DOMAIN}/tags/${query.slug}`} />
         <meta
           property="og:title"
-          content={`${category.name} | ${APP_NAME}`}
+          content={`${tag.name} | ${APP_NAME}`}
         />
         <meta
           property="og:description"
-          content={`Best programming tutorials on ${category.name}`}
+          content={`Best programming tutorials on ${tag.name}`}
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={`${DOMAIN}/categories/${query.slug}`} />
+        <meta property="og:url" content={`${DOMAIN}/tags/${query.slug}`} />
         <meta property="og:site_name" content={`${APP_NAME}`} />
 
         <meta property="og:image" content={`${DOMAIN}/static/images/vnpace.jpg`}/>
@@ -56,8 +56,8 @@ const Category = ({category, blogs, query}) => {
             <header>
               <div className="col-md-12 pt-3">
                 <h1 className="display-4 font-weight-bold">
-                  {/* NOTE: category && can be hidden any bug */}
-                  { category && category.name }
+                  {/* NOTE: tag && can be hidden any bug */}
+                  { tag && tag.name }
                 </h1>
                 {blogs.map((blog, index) => {
                   return (
@@ -76,15 +76,15 @@ const Category = ({category, blogs, query}) => {
   );
 };
 
-Category.getInitialProps = ({ query }) => {
-  return singleCategory(query.slug).then(data => {
+Tag.getInitialProps = ({ query }) => {
+  return singleTag(query.slug).then(data => {
     /** NOTE: data && can be hidden any bug */
     if(data && data.error) {
       console.log(data.error);
     } else {
-      return { category: data && data.category, blogs: data && data.blogs, query };
+      return { tag: data && data.tag, blogs: data && data.blogs, query };
     };
   });
 };
 
-export default Category;
+export default Tag;

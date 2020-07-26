@@ -116,7 +116,7 @@ export const singleTag = (slug) => {
    * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
    * NOTE: Imagine process like run by Postman
    */
-  return fetch(`${API}/tag/${slug}}`, {
+  return fetch(`${API}/tag/${slug}`, {
     /**
      * Config Method
      * Method for sending data from the client to the server

@@ -5,6 +5,8 @@
 /** Models will take request(action) from this controller to process data */
 const Tag = require("../models/tag");
 
+const Blog = require("../models/blog");
+
 /** Middleware to slugify data */
 const slugify = require("slugify");
 
@@ -103,12 +105,25 @@ exports.read = (req, res) => {
     /** Send error message if query failed */
     if(err) {
       return res.status(400).json({
-        error: "Tag not found"
+        error: errorHandler(err)
       });
     };
 
     /** Send success message if no error */
-    res.json(tag);
+    // res.json(tag);
+    Blog.find({tags: tag})
+    .populate("categories", "_id name slug")
+    .populate("tags", "_id name slug")
+    .populate("postedBy", "_id name")
+    .select("_id title slug excerpt categories postedBy tags createdAt updatedAt")
+    .exec((err, data) => {
+      if(err) {
+        return res.status(400).json({
+          error: errorHandler(err)
+        });
+      };
+      res.json({tag: tag, blogs: data})
+    });
   });
 };
 

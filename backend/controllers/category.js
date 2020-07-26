@@ -104,7 +104,6 @@ exports.read = (req, res) => {
    */
   Category.findOne({ slug }).exec((err, category) => {
     /** Send error message if query failed */
-    console.log(category);
     if(err) {
       return res.status(400).json({
         error: errorHandler(err)
