@@ -10,11 +10,17 @@
 /** Component allows enable client side transitions between routes */
 import Link from "next/link";
 
+
 /** Hooks API allows use state and other features without writing a class */
 import { useState, useEffect } from "react";
 
-/** Middleware allows to access the `router` object */
-import { Router, withRouter } from "next/router";
+/**
+ * Middleware allows to access the `router` object
+ * NOTE: Router => works, { Router } => don't works
+ * https://stackoverflow.com/questions/54968574/next-js-router-push-is-not-a-function-error
+ */
+import Router from "next/router";
+import { withRouter } from "next/router";
 
 /**
  * Middleware allows import and work with JavaScript modules dynamically
@@ -35,7 +41,7 @@ import { getCategories } from "../../actions/category";
 import { getTags } from "../../actions/tag";
 
 /** Middleware allows send data to create a new blog */
-import { createBlog } from "../../actions/blog";
+import { singleBlog, updateBlog } from "../../actions/blog";
 
 /**
  * Component allows create a rich text editor only client side rendering
@@ -49,35 +55,14 @@ const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 import { QuillModules, QuillFormats } from "../../helpers/quill";
 
+import { API } from "../../config";
+
 ////////////////////////////////////////////////////////////////////////////////
 // ! --------------------- APPLY MIDDLEWARE/COMPONENT ------------------------ !
 ////////////////////////////////////////////////////////////////////////////////
 
-/** Method to create a new blog */
-const CreateBlog = ({ router }) => {
-  /**
-   * Method to grab blog data from the local storage
-   * @return { String } blog value stored in local storage
-   */
-  const blogFormLocalStorage = () => {
-    /**
-     * Check if the script not run in a web-page inside a web-browser
-     * NOTE: Scripts (Ex: Javascript)
-     * can run in web-pages, in server side (nodejs), in background web-worker
-     */
-    if (typeof window === "undefined") {
-      return false;
-    }
-
-    /** Grab log value from local storage if exist */
-    if (localStorage.getItem("blog")) {
-      /** Convert to json object for working in the client side */
-      return JSON.parse(localStorage.getItem("blog"));
-    }
-
-    /** Return nothing if nothing match */
-    return false;
-  };
+const BlogUpdate = ({ router }) => {
+  const [body, setBody] = useState("");
 
   /** Create states of categories */
   const [categories, setCategories] = useState([]);
@@ -93,54 +78,58 @@ const CreateBlog = ({ router }) => {
 
   /**
    * Create states of body object
-   * @param { Object} body - by default grab value stored in the local storage
-   * @func { Func } setBody - Grab values in the body to set new state
-   */
-  const [body, setBody] = useState(blogFormLocalStorage());
-
-  /**
-   * Create states of body object
    * @param { Object} values - value of properties got from the blog
    * @func { Func } setValues - Grab values as the user types and set to new state
    */
   const [values, setValues] = useState({
+    title: "",
     error: "" /** Alert error message */,
-    sizeError: "" /** Alert when content is too big */,
     success: "" /** Alert success message */,
     formData: "" /** Show/Populate form data when router change */,
     title: "" /** Show/Populate title data */,
-    hidePublishButton: false /** Enable/Disable button Publish */,
+    body: "",
   });
 
-  /** Destructuring to grab all values for changing data in the form */
-  const {
-    error,
-    sizeError,
-    success,
-    formData,
-    title,
-    hidePublishButton,
-  } = values;
-
-  /** Grab token from the cookie */
+  const { error, success, formData, title } = values;
   const token = getCookie("token");
 
-  /**
-   * Load states anytime the router change
-   * @param { Func } func - Callback
-   * @param { Array } router - Callback only run when router state has a change
-   */
   useEffect(() => {
-    /**
-     * Create a instance of new form data anytime the router change
-     * NOTE: Router change: reload, forward, backward ... page.
-     */
     setValues({ ...values, formData: new FormData() });
-
+    initBlog();
     initCategories();
-
     initTags();
   }, [router]);
+
+  const initBlog = () => {
+    if (router.query.slug) {
+      singleBlog(router.query.slug).then((data) => {
+        if (data.error) {
+          console.log(data.error);
+        } else {
+          setValues({ ...values, title: data.title });
+          setBody(data.body);
+          setCategoriesArray(data.categories);
+          setTagsArray(data.tags);
+        }
+      });
+    }
+  };
+
+  const setCategoriesArray = (blogCategories) => {
+    let categoryList = [];
+    blogCategories.map((category, index) => {
+      categoryList.push(category._id);
+    });
+    setCheckedCategories(categoryList);
+  };
+
+  const setTagsArray = (blogTags) => {
+    let tagList = [];
+    blogTags.map((tag, index) => {
+      tagList.push(tag._id);
+    });
+    setCheckedTags(tagList);
+  };
 
   const initCategories = () => {
     /** Make api request to get categories */
@@ -166,81 +155,6 @@ const CreateBlog = ({ router }) => {
       /** Invoke method set state for tags */
       setTags(data);
     });
-  };
-
-  /**
-   * Method to call api send data to create a new blog
-   * @arg { Event } e - event
-   */
-  const publishBlog = (e) => {
-    /** Prevent reload page when working with api */
-    e.preventDefault();
-
-    createBlog(formData, token).then((data) => {
-      /**
-       * TODO: Cover error connect to the server
-       * Error: JWT expired error, can't fetch data
-       */
-      if (!data) return console.log("hieuphong: 401 Unauthorized");
-      console.log(data);
-
-      if (data.error) {
-        setValues({ ...values, error: data.error });
-      } else {
-        setValues({
-          ...values,
-          title: "",
-          error: "",
-          success: `A new log titled ${data.title} is created`,
-        });
-        setBody("");
-        setCategories([]);
-        setTags([]);
-      }
-    });
-  };
-
-  /**
-   * Handle any change in the form title
-   * @param { Any } name - field name in the schema
-   * @return { Func } callback
-   * NOTE: function of returning a function
-   */
-  const handleChange = (name) => (e) => {
-    /** Grab file name for the photo, and value for otherwise */
-    const value = name === "photo" ? e.target.files[0] : e.target.value;
-
-    /**
-     * Populate the form data when component loaded in the through useEffect
-     * @arg { Any } name - element's name
-     * @arg { Any } value - file's/field's value
-     */
-    formData.set(name, value);
-
-    /** Update the state */
-    setValues({ ...values, [name]: value, formData, error: "" });
-  };
-
-  /**
-   * Handle any change in the form body (React Quill)
-   * @arg { Event } e - entire event occur in the body
-   */
-  const handleBody = (e) => {
-    /** Grab values in body as the user make a event and set to new state */
-    setBody(e);
-
-    /**
-     * Populate the form data when component loaded in the through useEffect
-     * @arg { Any } "body" - name
-     * @arg { Any } e - entire event in the body
-     */
-    formData.set("body", e);
-
-    /** Populate body to local storage to keep data when page refreshed */
-    if (typeof window !== "undefined") {
-      /** Save in a json string format to later works with the server side */
-      localStorage.setItem("blog", JSON.stringify(e));
-    }
   };
 
   /**
@@ -317,6 +231,24 @@ const CreateBlog = ({ router }) => {
     formData.set("tags", newTagsList);
   };
 
+  const findOutCategory = (category) => {
+    const result = checkedCategories.indexOf(category);
+    if (result !== -1) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const findOutTag = (tag) => {
+    const result = checkedTags.indexOf(tag);
+    if (result !== -1) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   /** Method to render categories elements */
   const showCategories = () => {
     return (
@@ -326,6 +258,7 @@ const CreateBlog = ({ router }) => {
           <li key={index} className="list-unstyled">
             <input
               onChange={handleCategoryToggle(category._id)}
+              checked={findOutCategory(category._id)}
               type="checkbox"
               className="mr-2"
             />
@@ -345,6 +278,7 @@ const CreateBlog = ({ router }) => {
           <li key={index} className="list-unstyled">
             <input
               onChange={handleTagToggle(tag._id)}
+              checked={findOutTag(tag._id)}
               type="checkbox"
               className="mr-2"
             />
@@ -355,7 +289,54 @@ const CreateBlog = ({ router }) => {
     );
   };
 
-  /** Show error message */
+  /**
+   * Handle any change in the form title
+   * @param { Any } name - field name in the schema
+   * @return { Func } callback
+   * NOTE: function of returning a function
+   */
+  const handleChange = (name) => (e) => {
+    /** Grab file name for the photo, and value for otherwise */
+    const value = name === "photo" ? e.target.files[0] : e.target.value;
+
+    /**
+     * Populate the form data when component loaded in the through useEffect
+     * @arg { Any } name - element's name
+     * @arg { Any } value - file's/field's value
+     */
+    formData.set(name, value);
+
+    /** Update the state */
+    setValues({ ...values, [name]: value, formData, error: "" });
+  };
+
+  const handleBody = (e) => {
+    setBody(e);
+    formData.set("body", e);
+  };
+
+  const editBlog = (e) => {
+    e.preventDefault();
+    updateBlog(formData, token, router.query.slug).then((data) => {
+      if (data.error) {
+        setValues({ ...values, error: data.error });
+      } else {
+        setValues({
+          ...values,
+          title: "",
+          success: `Blog titled ${data.title} is successfully updated`,
+        });
+        if (isAuth() && isAuth().role === 1) {
+          // Router.replace(`/admin/crud/${router.query.slug}`);
+          Router.replace(`/admin`);
+        } else if (isAuth() && isAuth().role === 0) {
+          // Router.replace(`/user/crud/${router.query.slug}`);
+          Router.replace(`/user`);
+        }
+      };
+    });
+  };
+
   const showError = () => {
     return (
       <div
@@ -367,25 +348,24 @@ const CreateBlog = ({ router }) => {
     );
   };
 
-  /** Show success message */
   const showSuccess = () => {
     return (
       <div
-      className="alert alert-success"
-      style={{ display: success ? "" : "none" }}
-    >
-      {success}
-    </div>
+        className="alert alert-success"
+        style={{ display: success ? "" : "none" }}
+      >
+        {success}
+      </div>
     );
   };
 
   /**
-   * Method to create form for new blog
+   * Method to update form for new blog
    * @return a from
    */
-  const createBlogForm = () => {
+  const updateBlogForm = () => {
     return (
-      <form onSubmit={publishBlog}>
+      <form onSubmit={editBlog}>
         <div className="form-group">
           <label className="text-muted">Title</label>
           <input
@@ -407,7 +387,7 @@ const CreateBlog = ({ router }) => {
 
         <div>
           <button type="Submit" className="btn btn-primary">
-            Publish
+            Update
           </button>
         </div>
       </form>
@@ -418,11 +398,19 @@ const CreateBlog = ({ router }) => {
     <div className="container-fluid pd-5">
       <div className="row">
         <div className="col-md-8">
-          {createBlogForm()}
-          <div class="pt-3">
-            {showError()}
+          {updateBlogForm()}
+          <div className="pt-3">
             {showSuccess()}
+            {showError()}
           </div>
+
+          {body && (
+            <img
+              src={`${API}/blog/photo/${router.query.slug}`}
+              alt={title}
+              style={{ width: "100%" }}
+            />
+          )}
         </div>
         <div className="col-md-4">
           <div>
@@ -462,7 +450,7 @@ const CreateBlog = ({ router }) => {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-// ! ---------------------------- PUBLIC MODULE ------------------------------ !
+// ! --------------------------- PUBLIC COMPONENT ---------------------------- !
 ////////////////////////////////////////////////////////////////////////////////
 
-export default withRouter(CreateBlog);
+export default withRouter(BlogUpdate);

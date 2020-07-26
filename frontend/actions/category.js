@@ -116,7 +116,7 @@ export const singleCategory = (slug) => {
    * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
    * NOTE: Imagine process like run by Postman
    */
-  return fetch(`${API}/category/${slug}}`, {
+  return fetch(`${API}/category/${slug}`, {
     /**
      * Config Method
      * Method for sending data from the client to the server
