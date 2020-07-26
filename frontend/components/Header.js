@@ -29,6 +29,8 @@ import {
   NavLink
 } from 'reactstrap';
 
+import Search from "./blog/Search";
+
 /**
  * Bring CSS from node_modules
  * NOTE: Should use CDN instead if import way for performance.
@@ -62,7 +64,7 @@ const Header = () => {
 
   /** Use Hooks here */
   return (
-    <div>
+    <React.Fragment>
       <Navbar color="light" light expand="md">
         <Link href="/">
           <NavLink style={{cursor: "pointer"}} className="font-weight-bold">{APP_NAME}</NavLink>
@@ -137,7 +139,8 @@ const Header = () => {
           </Nav>
         </Collapse>
       </Navbar>
-    </div>
+      <Search /> 
+    </React.Fragment>
   );
 };
 

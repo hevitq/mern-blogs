@@ -8,6 +8,8 @@ import fetch from "isomorphic-fetch";
 /** Middleware to config connection to API between client and server */
 import { API } from "../config";
 
+import queryString from "query-string";
+
 ////////////////////////////////////////////////////////////////////////////////
 // !--------------------------APPLY MIDDLEWARE----------------------------------
 ////////////////////////////////////////////////////////////////////////////////
@@ -185,4 +187,19 @@ export const updateBlog = (blog, token, slug) => {
   })
   /** Send error message to the client */
   .catch(err => console.log(err));
+};
+
+export const listSearch = (params) => {
+  console.log("search params", params)
+  let query = queryString.stringify(params);
+  console.log("query params", query)
+  return (
+    fetch(`${API}/blogs/search?${query}`, {
+      method: "GET",
+    })
+    .then(response => {
+      return response.json()
+    })
+    .catch(err => console.log(err))
+  );
 };
