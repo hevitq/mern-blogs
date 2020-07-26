@@ -119,3 +119,70 @@ export const listRelated = (blog) => {
   /** Send error message to the client */
   .catch(err => console.log(err));
 };
+
+export const list = () => {
+  return (
+    fetch(`${API}/blogs`, {
+      method: "GET",
+    })
+    .then(response => {
+      return response.json()
+    })
+    .catch(err => console.log(err))
+  );
+};
+
+
+export const removeBlog = (slug, token) => {
+  /**
+   * One get user information will return fetch
+   * @argument { String } URL - API to connect to the server side to fetch data
+   * @argument { Object } Object - Configuration when fetching
+   * NOTE: Because using form data, not works with json data.
+   */
+  return fetch(`${API}/blog/${slug}`, {
+    /** Config method verbal to send data to the server */
+    method: "DELETE",
+
+    /** Config headers ways to send data to and receive data from server */
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+  })
+  /** Send response data to the client */
+  .then(response => {
+     return response.json();
+  })
+  /** Send error message to the client */
+  .catch(err => console.log(err));
+};
+
+export const updateBlog = (blog, token, slug) => {
+  /**
+   * One get user information will return fetch
+   * @argument { String } URL - API to connect to the server side to fetch data
+   * @argument { Object } Object - Configuration when fetching
+   * NOTE: Because using form data, not works with json data.
+   */
+  return fetch(`${API}/blog/${slug}`, {
+    /** Config method verbal to send data to the server */
+    method: "PUT",
+
+    /** Config headers ways to send data to and receive data from server */
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`
+    },
+
+    /** Config body content to send data to and receive data from server */
+    body: blog
+  })
+  /** Send response data to the client */
+  .then(response => {
+     return response.json();
+  })
+  /** Send error message to the client */
+  .catch(err => console.log(err));
+};
