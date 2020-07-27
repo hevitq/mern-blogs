@@ -33,16 +33,62 @@ Coming soon...
 
 ## Tech/framework used
 
-Coming soon...
-
 <b>Built with</b>
+MERN Stack
 
-- [Electron](https://electron.atom.io)
+- [MongoDB](https://www.mongodb.com/)
+- [ExpressJS](https://expressjs.com/)
+- [NextJS](https://nextjs.org/)
+- [NodeJS](https://nodejs.org/)
+
+**Node React and NextJs** because they all use same programming language JavaScript. So even though it's a FullStack app with separate **API** and separate **frontend**, we will be dealing with only one language - JavaScript.
+
+**NodeJs and Mongo DB** for building API because its incredibly easy, flexible and easy to scale.
+
+**React** is extremely powerful, and recently became so much fun and easy to use with the introduction of **hooks**.
+
+**NextJs** takes the development process of React apps to whole new level.
+
+**NextJs** comes with SSR out of the box and **SSR** is necessary for **SEO**
+
+**NextJs** automatically decides if your web page can be served as a **static page** or **dynamic page**. If your page is not making request to backend server to fetch data then NextJs automatically serves that page as **static page**. Static pages load extremely fast because they are static, so no need to wait for server response.
 
 ## Features
 
 Create a learning blog with all the features you need.
-Updating...
+
+- User Signup / Signin
+- Forgot Password / Reset Password
+- Account Activation on User Signup
+- Social Login with Google
+- JWT based Authentication System
+- Admin / User Dashboard
+- Role Based Authorization System
+- Advance CRUD with Image Upload
+- Blogs Search
+- Load More Blogs
+- Categories
+- Tags
+- SEO - Search Engine Optimization
+- Practical Real World Project running live on the server
+- API Development with Node Express MongoDB
+- Frontend Web Development with React Hooks and NextJs
+- SSR with NextJs
+- User Public Profile Page with List of Blogs and Contact Form
+- Blog Author Private Contact Form
+- User Private Dashboard
+- Multiple User Authorization System
+- Multi User System that can be Scaled to Build Marketplace App
+- Standard Contact Form
+- DISQUS Commenting System
+- Related Blogs
+- Google Analytics Integration
+- Sendgrid for Sending Emails
+- Deploying to Digital Ocean Cloud Servers
+- Adding Domain
+- Cloudflare CDN and Free SSL
+- Writing Clean Code
+- Scalable Project Structure
 
 ## Code Example
 
