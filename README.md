@@ -92,23 +92,55 @@ Create a learning blog with all the features you need.
 
 ## Code Example
 
-Show what the library does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
+Coming soon...
 
 ## Installation
 
-Provide step by step series of examples and explanations about how to get a development env running.
+Coming soon...
 
 ## API Reference
 
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
+You can easy grab api reference by "View in Web" feature in the postman tool. I documented APIs clearly, even if you can easy to write a script for generate to a document as a excel file.
 
 ## Tests
 
-Describe and show how to run the tests with code examples.
+I expect all code to be 100% covered by tests automatically. I will prepare some scripts for testing API with the Postman tools, and something like that. After that, I will cover my testing with the Selenium.
+
+### Setup testing environment
+
+You can easy to get your testing environment from the ./scripts folder.
+
+#### Setup postman for testing API
+
+What you need to do is get the postman script and import to your postman application or postman extension. I will write a markdown guideline, or create a short video, but at the moment you can contact to me if there is any problem when installing.
+
+#### Setup selenium for automation testing
+
+When coding completed, I will spend more time for making a guideline with automation testing by the selenium tool. I hope that I can cover 90% for this project, even if I must use some other tools or write some scrips.
 
 ## How to use?
 
-If people like your project they’ll want to learn how they can use it. To do so include step by step guide to use your project.
+I'm always trying take a note somethings related setting up development environment and write more comment to you can easy clear step-by-step a application development process.
+
+### Setup editor
+
+Basically you can use any editor for development in this project. But I'm coding by the **VSCode** tool, so anything related to formatting, guideline, tips & tricks, resolving bugs will be easy implement if you make it similarly. There is a reason I choose the VScode that I can easy grab any configuration and run it from command-line in windows, linux, mac os with no big difference.
+
+You can grab some scripts for creating your editor in vscode scripts. It will help you save more time instead of manually setup. But, I also think that you can wanna customize that, so I will try write a guideline for using extension and configuration.
+
+### Setup project configuration
+
+When you clone this project, you should spend a few time for reading README, CHANGELOG file. Step-by-step in development process, I tried write in those carefully.
+
+Before I can complete a good development guideline, you can grab anything related it through commit log with a Version Control Software like **Git**, **Source Tree**. I'm using Git command-line to save time when working with repository, but I also use Source Tree to easy grab more information visually.
+
+### Setup software development tool
+
+I will tracking any thing by JIRA tool when setting CI/CD process.
+
+### Setup cloud
+
+I will step-by-step guide how to deploy this project to the **Digital Ocean Cloudflare**.
 
 ## Contribute
 
