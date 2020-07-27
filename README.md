@@ -144,11 +144,11 @@ I will step-by-step guide how to deploy this project to the **Digital Ocean Clou
 
 ## Contribute
 
-Let people know how they can contribute into your project. A [contributing guideline](https://github.com/zulip/zulip-electron/blob/master/CONTRIBUTING.md) will be a big plus.
+Let people know how they can contribute into your project. A [contributing guideline](https://github.com/hevitq/mern-blogs/blob/master/CONTRIBUTING.md) will be a big plus.
 
 ## Credits
 
-Give proper credits. This could be a link to any repo which inspired you to build this project, any blog posts or links to people who contributed in this project.
+This project was developed by @hevtiq.
 
 #### Anything else that seems useful
 
@@ -157,3 +157,7 @@ Give proper credits. This could be a link to any repo which inspired you to buil
 A short snippet describing the license (MIT, Apache etc)
 
 MIT © [Hieu Phong]()
+
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/hevtiq/mern-blogs.svg)](https://starchart.cc/hevtiq/mern-blogs)
