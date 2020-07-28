@@ -16,7 +16,7 @@ const {
 
 
 /** Middleware to handle request and response related to the user */
-const { read, publicProfile } = require("../controllers/user");
+const { read, publicProfile, update, photo } = require("../controllers/user");
 
 ////////////////////////////////////////////////////////////////////////////////
 // !--------------------------APPLY MIDDLEWARE----------------------------------
@@ -27,13 +27,26 @@ const { read, publicProfile } = require("../controllers/user");
  * @arg { Method } requireSignIn - authenticate the user signin
  * @arg { Method } authMiddleware - query the regular user
  */
-router.get("/profile", requireSignIn, authMiddleware, read);
+router.get("/user/profile", requireSignIn, authMiddleware, read);
 
 /**
  * Router will receive CRUD request from the client side
  * Invoke and subscribing the public profile
  */
 router.get("/user/:username", publicProfile);
+
+/**
+ * Router will receive CRUD request from the client side
+ * @arg { Method } requireSignIn - authenticate the user signin
+ * @arg { Method } authMiddleware - query the regular user
+ */
+router.put("/user/update", requireSignIn, authMiddleware, update);
+
+/**
+ * Router will receive CRUD request from the client side
+ * Invoke and subscribing the public profile
+ */
+router.get("/user/photo/:username", photo);
 
 ////////////////////////////////////////////////////////////////////////////////
 // !--------------------------PUBLIC MODULE---------------------------------
