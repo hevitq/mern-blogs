@@ -23,8 +23,10 @@ exports.errorHandler = error => {
   /** Error message from error object */  
   let message = '';
 
+  if(!error) return message;
+
   /** Check error code exist */
-  if (error && error.code) {
+  if (error.code) {
       /** Condition run code block */
       switch (error.code) {
           case 11000:

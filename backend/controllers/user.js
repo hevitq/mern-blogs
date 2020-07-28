@@ -124,6 +124,12 @@ exports.update = (req, res) => {
     /** Extend user object */
     user = _.extend(user, fields);
 
+    if(fields.password && fields.password.length < 6) {
+      return res.status(400).json({
+        error: "Password should be min 6 characters long"
+      });
+    };
+
     if(files.photo) {
       if(files.photo.size > 1000000) {
         return res.status(400).json({
@@ -145,6 +151,7 @@ exports.update = (req, res) => {
 
       user.hashed_password = undefined;
       user.salt = undefined;
+      user.photo = undefined;
       res.json(user);
     });
   });

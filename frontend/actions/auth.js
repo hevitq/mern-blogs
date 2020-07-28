@@ -357,3 +357,29 @@ export const isAdmin = (role) => {
   }
   return "USER_ROLE";
 };
+
+/**
+ * Method to update user information
+ * @param { Object } user - user information
+ * @param { Callback } next
+ * @return callback
+ */
+export const updateUser = (user, next) => {
+  /** Check client side */
+  if(process.browser) {
+    /** Check item in localstorage */
+    if(localStorage.getItem("user")) {
+      /** Grab the user from the localstorage */
+      let auth = JSON.parse(localStorage.getItem("user"));
+
+      /** Populate the user from the response to update to localstorage*/
+      auth = user;
+
+      /** Update localstorage */
+      localStorage.setItem("user", JSON.stringify(auth));
+
+      /** Invoke next middleware */
+      next();
+    }
+  };
+};

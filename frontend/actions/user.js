@@ -96,7 +96,8 @@ export const update = (token, user) => {
   })
   /** Send response data to the client */
   .then(response => {
-     return response.json();
+    console.log(response);
+    return response.json();
   })
   /** Send error message to the client */
   .catch(err => console.log(err));
