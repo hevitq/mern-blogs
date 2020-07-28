@@ -24,7 +24,7 @@ exports.errorHandler = error => {
   let message = '';
 
   /** Check error code exist */
-  if (error.code) {
+  if (error && error.code) {
       /** Condition run code block */
       switch (error.code) {
           case 11000:
