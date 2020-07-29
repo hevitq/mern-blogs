@@ -33,7 +33,7 @@ const Private = ({ children }) => {
      * NOTE: if we can get the authenticated user from the local storage that means user already logged in.
      */
     if(!isAuth()) {
-      Router.push("./signin");
+      Router.push(`/signin`);
     };
   }, []);
 

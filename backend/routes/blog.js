@@ -14,7 +14,9 @@ const router = express.Router();
 /** Middleware allows protect the route */
 const {
   requireSignIn,
-  authMiddleware
+  adminMiddleware,
+  authMiddleware,
+  canUpdateDeleteBlog,
 } = require("../controllers/auth");
 
 /** Subscriber allows receive blog resources from the Controller  */
@@ -28,6 +30,7 @@ const {
   photo,
   listRelated,
   listSearch,
+  listByUser,
 } = require("../controllers/blog");
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -43,16 +46,22 @@ const {
  * @param { Object } requireSignIn - make sure the user authenticated
  * @param { Func } authMiddleware - query the regular user as user profile
  */
-router.post("/blog", requireSignIn, authMiddleware, create);
+router.post("/blog", requireSignIn, adminMiddleware, create);
 router.get("/blogs", list);
 /** NOTE: Use POST method, instead of GET method to have access to request body */
 router.post("/blogs-categories-tags", listAllBlogsCategoriesTags);
 router.get("/blog/:slug", read);
-router.delete("/blog/:slug", requireSignIn, authMiddleware, remove);
-router.put("/blog/:slug", requireSignIn, authMiddleware, update);
+router.delete("/blog/:slug", requireSignIn, adminMiddleware, remove);
+router.put("/blog/:slug", requireSignIn, adminMiddleware, update);
 router.get("/blog/photo/:slug", photo);
 router.post("/blogs/related", listRelated);
 router.get("/blogs/search", listSearch);
+
+/** Auth user blog CRUD */
+router.post("/user/blog", requireSignIn, authMiddleware, create);
+router.get("/:username/blogs", listByUser);
+router.delete("/user/blog/:slug", requireSignIn, authMiddleware, canUpdateDeleteBlog, remove);
+router.put("/user/blog/:slug", requireSignIn, authMiddleware, canUpdateDeleteBlog, update);
 
 ////////////////////////////////////////////////////////////////////////////////
 // !--------------------------PUBLIC MODULE---------------------------------

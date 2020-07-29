@@ -28,7 +28,7 @@ import moment from "moment";
 // ! --------------------- APPLY MIDDLEWARE/COMPONENT ------------------------ !
 ////////////////////////////////////////////////////////////////////////////////
 
-const BlogRead = () => {
+const BlogRead = ({username}) => {
   const [blogs, setBlogs] = useState([]);
 
   const [message, setMessage] = useState("");
@@ -40,7 +40,7 @@ const BlogRead = () => {
   }, []);
 
   const loadBlogs = () => {
-    list().then(data => {
+    list(username).then(data => {
       if(data.error) {
         console.log(data.error)
       } else {
@@ -51,10 +51,10 @@ const BlogRead = () => {
 
   const deleteBlog = (slug) => {
     removeBlog(slug, token).then(data => {
-      if(data.error) {
-        console.log(data.error);
+      if(!data || data.error) {
+        console.log(data && data.error);
       } else {
-        setMessage(data.message);
+        setMessage(data && data.message);
         loadBlogs()
       };
     });

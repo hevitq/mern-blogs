@@ -181,8 +181,8 @@ const CreateBlog = ({ router }) => {
        * TODO: Cover error connect to the server
        * Error: JWT expired error, can't fetch data
        */
-      if (!data) return console.log("hieuphong: 401 Unauthorized");
-      console.log(data);
+      // if (!data) return console.log("hieuphong: 401 Unauthorized");
+      // console.log(data);
 
       if (data.error) {
         setValues({ ...values, error: data.error });
@@ -191,7 +191,7 @@ const CreateBlog = ({ router }) => {
           ...values,
           title: "",
           error: "",
-          success: `A new log titled ${data.title} is created`,
+          success: `${data.title} is created`,
         });
         setBody("");
         setCategories([]);
@@ -399,7 +399,7 @@ const CreateBlog = ({ router }) => {
           <ReactQuill
             modules={QuillModules}
             formats={QuillFormats}
-            value={body}
+            value={(body === false) ? "" : body}
             placeholder="Write something amazing..."
             onChange={handleBody}
           />
@@ -419,7 +419,7 @@ const CreateBlog = ({ router }) => {
       <div className="row">
         <div className="col-md-8">
           {createBlogForm()}
-          <div class="pt-3">
+          <div className="pt-3">
             {showError()}
             {showSuccess()}
           </div>

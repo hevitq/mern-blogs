@@ -10,6 +10,8 @@ import { API } from "../config";
 
 import queryString from "query-string";
 
+import {isAuth} from "./auth";
+
 ////////////////////////////////////////////////////////////////////////////////
 // !--------------------------APPLY MIDDLEWARE----------------------------------
 ////////////////////////////////////////////////////////////////////////////////
@@ -21,13 +23,22 @@ import queryString from "query-string";
  * @return { Object } the response body
  */
 export const createBlog = (blog, token) => {
+  /** Variable to dynamic API */
+  let createBlogEndpoint;
+
+  if(isAuth() && isAuth().role === 1) {
+    createBlogEndpoint = `${API}/blog`;
+  } else if (isAuth() && isAuth().role === 0) {
+    createBlogEndpoint = `${API}/user/blog`;
+  };
+
   /**
    * One get user information will return fetch
    * @argument { String } URL - API to connect to the server side to fetch data
    * @argument { Object } Object - Configuration when fetching
    * NOTE: Because using form data, not works with json data.
    */
-  return fetch(`${API}/blog`, {
+  return fetch(`${createBlogEndpoint}`, {
     /** Config method verbal to send data to the server */
     method: "POST",
 
@@ -122,7 +133,16 @@ export const listRelated = (blog) => {
   .catch(err => console.log(err));
 };
 
-export const list = () => {
+export const list = (username) => {
+  /** Variable to dynamic API */
+  let listBlogsEndpoint;
+
+  if(username) {
+    listBlogsEndpoint = `${API}/${username}/blogs`;
+  } else {
+    listBlogsEndpoint = `${API}/blogs`;
+  };
+
   return (
     fetch(`${API}/blogs`, {
       method: "GET",
@@ -136,13 +156,22 @@ export const list = () => {
 
 
 export const removeBlog = (slug, token) => {
+  /** Variable to dynamic API */
+  let deleteBlogEndpoint;
+
+  if(isAuth() && isAuth().role === 1) {
+    deleteBlogEndpoint = `${API}/blog/${slug}`;
+  } else if (isAuth() && isAuth().role === 0) {
+    deleteBlogEndpoint = `${API}/user/blog/${slug}`;
+  };
+
   /**
    * One get user information will return fetch
    * @argument { String } URL - API to connect to the server side to fetch data
    * @argument { Object } Object - Configuration when fetching
    * NOTE: Because using form data, not works with json data.
    */
-  return fetch(`${API}/blog/${slug}`, {
+  return fetch(`${deleteBlogEndpoint}`, {
     /** Config method verbal to send data to the server */
     method: "DELETE",
 
@@ -162,13 +191,22 @@ export const removeBlog = (slug, token) => {
 };
 
 export const updateBlog = (blog, token, slug) => {
+  /** Variable to dynamic API */
+  let updateBlogEndpoint;
+
+  if(isAuth() && isAuth().role === 1) {
+    updateBlogEndpoint = `${API}/blog/${slug}`;
+  } else if (isAuth() && isAuth().role === 0) {
+    updateBlogEndpoint = `${API}/user/blog/${slug}`;
+  };
+
   /**
    * One get user information will return fetch
    * @argument { String } URL - API to connect to the server side to fetch data
    * @argument { Object } Object - Configuration when fetching
    * NOTE: Because using form data, not works with json data.
    */
-  return fetch(`${API}/blog/${slug}`, {
+  return fetch(`${updateBlogEndpoint}`, {
     /** Config method verbal to send data to the server */
     method: "PUT",
 

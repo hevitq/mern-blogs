@@ -33,7 +33,7 @@ const SmallCard = ({ blog }) => {
           <a>
             <img
               className="img img-fluid"
-              style={{ maxHeight: "auto", width: "100%" }}
+              style={{ maxHeight: "250px", width: "100%" }}
               src={`${API}/blog/photo/${blog.slug}`}
               alt={blog.title}
             />
@@ -49,7 +49,9 @@ const SmallCard = ({ blog }) => {
               <h5 className="card-title">{blog.title}</h5>
             </a>
           </Link>
-          <p className="card-text">{renderHTML(blog.excerpt)}</p>
+          <div className="card-text">
+            {renderHTML(blog.excerpt)}
+          </div>
         </section>
       </div>
 
