@@ -14,6 +14,8 @@ import fetch from 'isomorphic-fetch';
 /** Bring api from config file */
 import { API } from "../config";
 
+import { handleResponse } from "./auth";
+
 /**
  * Method to make a request for creating a new tag
  * @param { String } tag - a new tag name that the user inputted
@@ -59,6 +61,8 @@ export const create = (tag, token) => {
    * to handle the response
    */
   .then(response => {
+    handleResponse(response);
+
     /** Get the json response */
     return response.json();
   })
@@ -178,6 +182,9 @@ export const removeTag = (slug, token) => {
    * to handle the response
    */
   .then(response => {
+    handleResponse(response);
+
+
     /** Get the json response */
     return response.json();
   })

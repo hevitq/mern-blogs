@@ -14,6 +14,9 @@ import fetch from 'isomorphic-fetch';
 /** Bring api from config file */
 import { API } from "../config";
 
+import { handleResponse } from "./auth";
+
+
 /**
  * Method to make a request to the server for creating a new category
  * @param { String } category - a new category name that the user inputted
@@ -59,6 +62,8 @@ export const create = (category, token) => {
    * to handle the response
    */
   .then(response => {
+    handleResponse(response);
+
     /** Get the json response */
     return response.json();
   })
@@ -178,6 +183,8 @@ export const removeCategory = (slug, token) => {
    * to handle the response
    */
   .then(response => {
+    handleResponse(response);
+    
     /** Get the json response */
     return response.json();
   })
