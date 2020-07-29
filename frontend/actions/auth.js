@@ -16,6 +16,23 @@ import cookie from "js-cookie";
 /** Bring api from config file */
 import { API } from "../config";
 
+import Router from "next/router";
+
+export const handleResponse = (response) => {
+  if(response.status === 401) {
+    signout(() => {
+      Router.push({
+        pathname: "/signin",
+        query: {
+          message: "Your session is expired. Please signin"
+        },
+      });
+    });
+  } else {
+    return;
+  };
+};
+
 /**
  * Method to make a request for creating a new user
  * @param { Object } user - user information passed to sent to the server side

@@ -8,6 +8,8 @@ import fetch from "isomorphic-fetch";
 /** Middleware to config connection to API between client and server */
 import { API } from "../config";
 
+import { handleResponse } from "./auth";
+
 ////////////////////////////////////////////////////////////////////////////////
 // !--------------------------APPLY MIDDLEWARE----------------------------------
 ////////////////////////////////////////////////////////////////////////////////
@@ -96,7 +98,7 @@ export const update = (token, user) => {
   })
   /** Send response data to the client */
   .then(response => {
-    console.log(response);
+    handleResponse(response);
     return response.json();
   })
   /** Send error message to the client */
