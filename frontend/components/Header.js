@@ -4,7 +4,7 @@
  * They let you use state and other React features without writing a class.
  * Hooks don’t work inside classes.
  */
-import {useState} from 'react';
+import { useState } from "react";
 
 /** Bring middleware from next */
 import Link from "next/link";
@@ -14,7 +14,7 @@ import Router from "next/router";
 import NProgress from "nprogress";
 
 /** Bring the app name from config file */
-import {APP_NAME} from "../config";
+import { APP_NAME } from "../config";
 
 /** Bring methods from ../actions/auth */
 import { signout, isAuth } from "../actions/auth";
@@ -26,8 +26,8 @@ import {
   NavbarToggler,
   Nav,
   NavItem,
-  NavLink
-} from 'reactstrap';
+  NavLink,
+} from "reactstrap";
 
 import Search from "./blog/Search";
 
@@ -42,14 +42,14 @@ import Search from "./blog/Search";
  * @param { String } url - url in the address bar
  * @return Callback function
  */
-Router.onRouteChangeStart = url => NProgress.start();
-Router.onRouteChangeComplete = url => NProgress.done();
-Router.onRouteChangeError = url => NProgress.done();
+Router.onRouteChangeStart = (url) => NProgress.start();
+Router.onRouteChangeComplete = (url) => NProgress.done();
+Router.onRouteChangeError = (url) => NProgress.done();
 
 /**
  * Functional component, is a “stateless components”
  * props: () in the current time.
-*/
+ */
 const Header = () => {
   /**
    * Declare a new state variable
@@ -67,7 +67,9 @@ const Header = () => {
     <React.Fragment>
       <Navbar color="light" light expand="md">
         <Link href="/">
-          <NavLink style={{cursor: "pointer"}} className="font-weight-bold">{APP_NAME}</NavLink>
+          <NavLink style={{ cursor: "pointer" }} className="font-weight-bold">
+            {APP_NAME}
+          </NavLink>
         </Link>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
@@ -75,71 +77,79 @@ const Header = () => {
             <React.Fragment>
               <NavItem>
                 <Link href="/blogs">
-                  <NavLink style={{cursor: "pointer"}}>
-                    Blogs
-                  </NavLink>
+                  <NavLink style={{ cursor: "pointer" }}>Blogs</NavLink>
                 </Link>
               </NavItem>
             </React.Fragment>
 
             {/* Show signin, signup only if user not authenticated */}
-            { !isAuth() && (
+            {!isAuth() && (
               <React.Fragment>
                 <NavItem>
                   <Link href="/signup">
-                    <NavLink style={{cursor: "pointer"}}>
-                      Signup
-                    </NavLink>
+                    <NavLink style={{ cursor: "pointer" }}>Signup</NavLink>
                   </Link>
                 </NavItem>
                 <NavItem>
                   <Link href="/signin">
-                    <NavLink style={{cursor: "pointer"}}>
-                      Signin
-                    </NavLink>
+                    <NavLink style={{ cursor: "pointer" }}>Signin</NavLink>
                   </Link>
                 </NavItem>
               </React.Fragment>
-            ) }
+            )}
 
             {/* Show dashboard Link of the authenticated user */}
-            { isAuth() && isAuth().role === 0 && (
+            {isAuth() && isAuth().role === 0 && (
               <NavItem>
                 {/* Navigate to /user (user dashboard) as click on Link */}
-                <Link href="/user">
+                <Link href="/user/">
                   <NavLink>
                     {`${isAuth().name}'s Dashboard`}
                   </NavLink>
                 </Link>
-            </NavItem>
+              </NavItem>
             )}
 
             {/* Show dashboard Link of the authenticated admin user */}
-            { isAuth() && isAuth().role === 1 && (
+            {isAuth() && isAuth().role === 1 && (
               <NavItem>
                 {/* Navigate to /admin (admin dashboard) as click on Link */}
-                <Link href="/admin">
-                  <NavLink>
+                <Link href="/admin/">
+                <NavLink>
                     {`${isAuth().name}'s Dashboard`}
                   </NavLink>
                 </Link>
-            </NavItem>
+              </NavItem>
             )}
 
             {/* Show signout only if user authenticated */}
-            { isAuth() && (
+            {isAuth() && (
               <NavItem>
                 {/* Redirect to /signin as click on signout */}
-                <NavLink style={{cursor: "pointer"}} onClick={() => signout(() => Router.replace("/signin"))}>
+                <NavLink
+                  style={{ cursor: "pointer" }}
+                  onClick={() => signout(() => Router.replace("/signin"))}
+                >
                   Signout
                 </NavLink>
-            </NavItem>
+              </NavItem>
             )}
 
+            {/* Show create a blog */}
+            <NavItem>
+              <Link href="/user/crud/blog">
+                <NavLink
+                  className="btn btn-primary text-white"
+                  style={{ cursor: "pointer" }}
+                >
+                  Write a blog
+                </NavLink>
+              </Link>
+            </NavItem>
           </Nav>
         </Collapse>
       </Navbar>
-      <Search /> 
+      <Search />
     </React.Fragment>
   );
 };

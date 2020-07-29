@@ -5,6 +5,8 @@
 /** Models will take request(action) from this controller to process data */
 const User = require("../models/user");
 
+const Blog = require("../models/blog");
+
 /** Middleware to generate/create a unique string (username) */
 const shortId = require("shortid");
 
@@ -13,6 +15,8 @@ const jwt = require("jsonwebtoken");
 
 /** Middleware to check valid token */
 const expressJwt = require("express-jwt");
+
+const { errorHandler } = require("../helpers/dbErrorHandler");
 
 ////////////////////////////////////////////////////////////////////////////////
 // !-------------------------APPLY AND PUBLIC MODULE----------------------------
@@ -72,14 +76,13 @@ exports.signup = (req, res) => {
         });
       }
 
-     /** Send success message if no error */
+      /** Send success message if no error */
       res.json({
         message: "Signup success! Please signin.",
       });
     });
   });
 };
-
 
 /**
  * Middleware to handle when the user signin
@@ -147,7 +150,7 @@ exports.signin = (req, res) => {
      */
     return res.json({
       token,
-      user: { _id, username, name, email, role }
+      user: { _id, username, name, email, role },
     });
   });
 };
@@ -198,17 +201,17 @@ exports.authMiddleware = (req, res, next) => {
    */
   User.findById({ _id: authUserId }).exec((err, user) => {
     /** Send the error message if query _id failed */
-    if(err || !user) {
+    if (err || !user) {
       return res.status(400).json({
-        error: "User not found"
+        error: "User not found",
       });
-    };
+    }
 
     /** Add the user taken into a request object called profile */
     req.profile = user;
 
     /** Invoke next middleware */
-    next()
+    next();
   });
 };
 
@@ -217,7 +220,7 @@ exports.authMiddleware = (req, res, next) => {
  * @param { Any } req - request from the client side application
  * @param { Any } res - response from the server side
  * @param { Func } next - callback to invoke the next middleware
- * @return { Any } user profile that hold the entire user information 
+ * @return { Any } user profile that hold the entire user information
  */
 exports.adminMiddleware = (req, res, next) => {
   /** Grab admin user id from the request */
@@ -235,18 +238,18 @@ exports.adminMiddleware = (req, res, next) => {
    */
   User.findById({ _id: adminUserId }).exec((err, user) => {
     /** Send the error message if query _id failed */
-    if(err || !user) {
+    if (err || !user) {
       return res.status(400).json({
-        error: "User not found"
+        error: "User not found",
       });
-    };
+    }
 
     /** Send the error message if user role is not admin user */
-    if(user.role !== ROLE_ADMIN) {
+    if (user.role !== ROLE_ADMIN) {
       return res.status(400).json({
-        error: "Access denied!"
+        error: "Access denied!",
       });
-    };
+    }
 
     /**
      * Add the user taken into a request object called profile
@@ -255,6 +258,29 @@ exports.adminMiddleware = (req, res, next) => {
     req.profile = user;
 
     /** Invoke next middleware */
-    next()
+    next();
+  });
+};
+
+exports.canUpdateDeleteBlog = (req, res, next) => {
+  const slug = req.params.slug.toLowerCase();
+
+  Blog.findOne({ slug }).exec((err, data) => {
+    if (err) {
+      return res.status(400).json({
+        error: errorHandler(err),
+      });
+    }
+
+    let authorizedUser =
+      data.postedBy._id.toString() === req.profile._id.toString();
+
+    if (!authorizedUser) {
+      return res.status(400).json({
+        error: "You are not authorized",
+      });
+    };
+
+    next();
   });
 };
