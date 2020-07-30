@@ -12,6 +12,8 @@ const router = express.Router();
 const {
   userSignUpValidator,
   userSignInValidator,
+  forgotPasswordValidator,
+  resetPasswordValidator,
 } = require("../validators/auth");
 
 /** Middleware to run validation for validator sets */
@@ -21,7 +23,7 @@ const { runValidation } = require("../validators");
 const { requireSignIn } = require("../controllers/auth");
 
 /** Middleware to handle request and response related to the blog */
-const { signup, signin, signout } = require("../controllers/auth");
+const { signup, signin, signout, forgotPassword, resetPassword } = require("../controllers/auth");
 
 ////////////////////////////////////////////////////////////////////////////////
 // !--------------------------APPLY MIDDLEWARE----------------------------------
@@ -36,6 +38,9 @@ const { signup, signin, signout } = require("../controllers/auth");
 router.post("/signup", userSignUpValidator, runValidation, signup);
 router.post("/signin", userSignInValidator, runValidation, signin);
 router.get("/signout", signout);
+router.put("/forgot-password", forgotPasswordValidator, runValidation, forgotPassword);
+router.put("/reset-password", resetPasswordValidator, runValidation, resetPassword);
+
 router.get("/secret", requireSignIn, (req, res) => {
   res.json({
     user: req.user,

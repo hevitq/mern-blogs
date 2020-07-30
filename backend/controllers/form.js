@@ -24,7 +24,7 @@ exports.contactForm = (req, res) => {
 
   sgMail
     .send(emailData)
-    .then(() => {
+    .then((sent) => {
       return res.json({
         success: true,
       });
@@ -58,7 +58,7 @@ exports.contactBlogAuthorForm = (req, res) => {
 
   sgMail
     .send(emailData)
-    .then(() => {
+    .then((sent) => {
       return res.json({
         success: true,
       });
