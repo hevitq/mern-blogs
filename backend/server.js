@@ -51,6 +51,9 @@ const categoryRoutes = require("./routes/category");
 /** Endpoints related to the tag */
 const tagRoutes = require("./routes/tag");
 
+/** Endpoints related to contact form */
+const formRoutes = require("./routes/form");
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // !--------------------------CONNECT EXPRESS-----------------------------------
@@ -117,6 +120,7 @@ app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", categoryRoutes);
 app.use("/api", tagRoutes);
+app.use("/api", formRoutes);
 
 ////////////////////////////////////////////////////////////////////////////////
 // !--------------------------MONITOR APPLICATION-------------------------------
