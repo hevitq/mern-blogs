@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { emailContactForm } from "../../actions/form";
 
-const ContactForm = () => {
+const ContactForm = ({authorEmail}) => {
   const [values, setValues] = useState({
     message: "",
     name: "",
@@ -20,7 +20,7 @@ const ContactForm = () => {
   const clickSubmit = (e) => {
     e.preventDefault();
     setValues({ ...values, buttonText: "Sending..." });
-    emailContactForm({ name, email, message }).then((data) => {
+    emailContactForm({ authorEmail, name, email, message }).then((data) => {
       if (!data || data.error) {
         setValues({ ...values, error: data && data.error });
       } else {
