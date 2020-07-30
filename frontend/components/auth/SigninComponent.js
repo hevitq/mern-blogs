@@ -14,6 +14,8 @@ import { signin, authenticate, isAuth } from "../../actions/auth";
 /** Bring Router from next */
 import Router from "next/router";
 
+import Link from "next/link";
+
 /**
  * Function to create a component (functional component)
  * @return Signin Form
@@ -180,6 +182,11 @@ const SigninComponent = () => {
 
       {/* To hide the signin form when existing user data response */}
       {showForm && signinForm()}
+
+      <br/>
+      <Link href="/auth/password/forgot">
+        <a className="btn btn-outline-danger btn-sm">Forgot password</a>
+      </Link>
     </React.Fragment>
   );
 };
