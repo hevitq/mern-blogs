@@ -18,6 +18,10 @@ const expressJwt = require("express-jwt");
 
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
+const sgMail = require("@sendgrid/mail");
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
 ////////////////////////////////////////////////////////////////////////////////
 // !-------------------------APPLY AND PUBLIC MODULE----------------------------
 // ? Accept a user's input.
@@ -279,8 +283,60 @@ exports.canUpdateDeleteBlog = (req, res, next) => {
       return res.status(400).json({
         error: "You are not authorized",
       });
-    };
+    }
 
     next();
   });
 };
+
+// forgotPassword, resetPassword
+exports.forgotPassword = (req, res) => {
+  const { email } = req.body;
+
+  User.findOne({ email }, (err, user) => {
+    if (err || !user) {
+      return res.status(401).json({
+        error: "User with that email does not exist",
+      });
+    }
+
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_RESET_PASSWORD, {
+      expiresIn: "10m",
+    });
+
+    const emailData = {
+      from: process.env.EMAIL_FROM,
+      to: email,
+      subject: `Password reset link`,
+      html: `
+        <p>Please use the following link to reset your password</p>
+        <p>${process.env.CLIENT_URL}/auth/password/reset/${token}</p>
+        <hr />
+        <p>This email may contain sensitive information</p>
+        <p>https://vnpace.dev</p>
+      `,
+    };
+
+    return User.updateOne({ resetPasswordLink: token }, (err, success) => {
+      if (err) {
+        return res.json({
+          error: errorHandler(err),
+        });
+      } else {
+        sgMail
+          .send(emailData)
+          .then(() => {
+            return res.json({
+              // success: true,
+              message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10 minutes.`,
+            });
+          })
+          .catch((error) => {
+            console.log(error.response.body);
+          });
+      }
+    });
+  });
+};
+
+exports.resetPassword = (req, res) => {};

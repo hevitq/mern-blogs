@@ -31,3 +31,25 @@ exports.userSignInValidator = [
     .isLength({ min: 6 })
     .withMessage("Password must be at least 6 characters long"),
 ];
+
+/**
+ * Validator set use to check fields when forgetting password
+ */
+exports.forgotPasswordValidator = [
+  check("email")
+    .not()
+    .isEmpty()
+    .isEmail()
+    .withMessage("Must be a valid email address"),
+];
+
+/**
+ * Validator set use to check fields when resetting password
+ */
+exports.resetPasswordValidator = [
+  check("newPassword")
+    .not()
+    .isEmpty()
+    .isLength({ min: 6 })
+    .withMessage("Password must be at least 6 characters long"),
+];
