@@ -13,7 +13,7 @@ const { contactFormValidator } = require("../validators/form");
 const { runValidation } = require("../validators");
 
 /** Middleware to handle request and response related to the category */
-const { contactForm } = require("../controllers/form");
+const { contactForm, contactBlogAuthorForm } = require("../controllers/form");
 
 ////////////////////////////////////////////////////////////////////////////////
 // !--------------------------APPLY MIDDLEWARE----------------------------------
@@ -21,12 +21,11 @@ const { contactForm } = require("../controllers/form");
 
 /**
  * Router will receive CRUD request from the client side
- * @arg { Module } categoryCreateValidator - make sure category validator
+ * @arg { Module } contactFormValidator - make sure contact validator
  * @arg { Method } runValidation - run validation
- * @arg { Module } requireSignIn - make sure the user authenticated
- * @arg { Method } adminMiddleware - only amin can create a new category
  */
 router.post("/contact", contactFormValidator, runValidation, contactForm);
+router.post("/contact-blog-author", contactFormValidator, runValidation, contactBlogAuthorForm);
 
 ////////////////////////////////////////////////////////////////////////////////
 // !--------------------------PUBLIC MODULE---------------------------------
