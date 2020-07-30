@@ -125,7 +125,6 @@ UserProfile.getInitialProps = ({query}) => {
       if(data.error) {
         console.log(data.error);
       } else {
-        // console.log(data)
         return {user: data.user, blogs: data.blogs, query};
       }
     })

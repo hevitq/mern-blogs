@@ -177,21 +177,15 @@ const CreateBlog = ({ router }) => {
     e.preventDefault();
 
     createBlog(formData, token).then((data) => {
-      /**
-       * TODO: Cover error connect to the server
-       * Error: JWT expired error, can't fetch data
-       */
-      // if (!data) return console.log("hieuphong: 401 Unauthorized");
-      // console.log(data);
 
-      if (data.error) {
-        setValues({ ...values, error: data.error });
+      if (!data || data.error) {
+        setValues({ ...values, error: data && data.error });
       } else {
         setValues({
           ...values,
           title: "",
           error: "",
-          success: `${data.title} is created`,
+          success: `${ data && data.title} is created`,
         });
         setBody("");
         setCategories([]);

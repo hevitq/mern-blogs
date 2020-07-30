@@ -34,7 +34,6 @@ const Search = () => {
   };
 
   const handleChange = e => {
-    // console.log(e.target.value);
     setValues({...values, search: e.target.value, searched: false, results: [] });
   };
 

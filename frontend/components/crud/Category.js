@@ -136,12 +136,6 @@ const Category = () => {
    */
   const deleteCategory = (slug) => {
     removeCategory(slug, token).then((data) => {
-      /**
-       * TODO: Cover error connect to the server
-       * Error: JWT expired error, can't fetch data
-       */
-      if (!data) return console.log("401 Unauthorized");
-
       /** Update values object when creating category failed */
       if (data.error) {
         return setValues({
