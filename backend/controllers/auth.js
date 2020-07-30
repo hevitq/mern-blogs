@@ -329,7 +329,6 @@ exports.forgotPassword = (req, res) => {
           .send(emailData)
           .then((sent) => {
             return res.json({
-              // success: true,
               message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10 minutes.`,
             });
           })
@@ -342,9 +341,11 @@ exports.forgotPassword = (req, res) => {
 };
 
 exports.resetPassword = (req, res) => {
+  console.log("Im here")
   const { resetPasswordLink, newPassword } = req.body;
 
   if(resetPasswordLink) {
+    
     jwt.verify(resetPasswordLink, process.env.JWT_RESET_PASSWORD, function(err, decoded) {
       if(err) {
         return res.status(401).json({
