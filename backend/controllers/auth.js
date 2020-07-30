@@ -18,6 +18,8 @@ const expressJwt = require("express-jwt");
 
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
+const _ = require("lodash");
+
 const sgMail = require("@sendgrid/mail");
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -74,7 +76,7 @@ exports.signup = (req, res) => {
      */
     newUser.save((err, success) => {
       /** Send error message if save failed */
-      if (err) {
+      if (err || !success) {
         return res.status(400).json({
           error: err,
         });
@@ -317,15 +319,15 @@ exports.forgotPassword = (req, res) => {
       `,
     };
 
-    return User.updateOne({ resetPasswordLink: token }, (err, success) => {
-      if (err) {
+    return user.updateOne({ resetPasswordLink: token }, (err, success) => {
+      if (err || !success) {
         return res.json({
           error: errorHandler(err),
         });
       } else {
         sgMail
           .send(emailData)
-          .then(() => {
+          .then((sent) => {
             return res.json({
               // success: true,
               message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10 minutes.`,
@@ -339,4 +341,41 @@ exports.forgotPassword = (req, res) => {
   });
 };
 
-exports.resetPassword = (req, res) => {};
+exports.resetPassword = (req, res) => {
+  const { resetPasswordLink, newPassword } = req.body;
+
+  if(resetPasswordLink) {
+    jwt.verify(resetPasswordLink, process.env.JWT_RESET_PASSWORD, function(err, decoded) {
+      if(err) {
+        return res.status(401).json({
+          error: "Expired link. Try again"
+        });
+      };
+
+      User.findOne({resetPasswordLink}, (err, user) => {
+        if(err || !user) {
+          return res.status(401).json({
+            error: "Something went wrong. Try later."
+          });
+        };
+
+        const updatedFields = {
+          password: newPassword,
+          resetPasswordLink: ""
+        };
+        user = _.extend(user, updatedFields);
+
+        user.save((err, result) => {
+          if(err || !result) {
+            return res.status(400).json({
+              error: errorHandler(err)
+            });
+          };
+          res.json({
+            message: "Great! Now you can login with your new password"
+          })
+        });
+      });
+    });
+  };
+};
