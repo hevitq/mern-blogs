@@ -341,7 +341,6 @@ exports.forgotPassword = (req, res) => {
 };
 
 exports.resetPassword = (req, res) => {
-  console.log("Im here")
   const { resetPasswordLink, newPassword } = req.body;
 
   if(resetPasswordLink) {

@@ -136,12 +136,6 @@ const Tag = () => {
    */
   const deleteTag = (slug) => {
     removeTag(slug, token).then((data) => {
-      /**
-       * TODO: Cover error connect to the server
-       * Error: JWT expired error, can't fetch data
-       */
-      if (!data) return console.log("401 Unauthorized");
-
       /** Update values object when creating tag failed */
       if (data.error) {
         return setValues({
