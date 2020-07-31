@@ -36,7 +36,7 @@ const { signup, signin, signout, forgotPassword, resetPassword, preSignup } = re
  * @arg { Func } runValidation - run validation for validator sets
  */
 router.post("/pre-signup", userSignUpValidator, runValidation, preSignup);
-router.post("/signup", userSignUpValidator, runValidation, signup);
+router.post("/signup", signup);
 router.post("/signin", userSignInValidator, runValidation, signin);
 router.get("/signout", signout);
 router.put("/forgot-password", forgotPasswordValidator, runValidation, forgotPassword);

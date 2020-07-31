@@ -77,62 +77,103 @@ exports.preSignup =(req, res) => {
   });
 };
 
-/**
- * Middleware to handle when the user signup
- * @param { Any } req - request from the client side application
- * @param { Any } res - response from the server side
- */
+// /**
+//  * Middleware to handle when the user signup
+//  * @param { Any } req - request from the client side application
+//  * @param { Any } res - response from the server side
+//  */
+// exports.signup = (req, res) => {
+//   /**
+//    * Request Model query one user
+//    * @param { MongooseFilterQuery } email - email from the request body
+//    * @return { Object } - the response body
+//    */
+//   User.findOne({ email: req.body.email }).exec((err, user) => {
+//     /** Send a error message if user exist */
+//     if (user) {
+//       return res.status(400).json({
+//         error: "Email is taken",
+//       });
+//     }
+
+//     /** Destructuring request body to grab user information */
+//     const { name, email, password } = req.body;
+
+//     /** Generate a unique username */
+//     let username = shortId.generate();
+
+//     /** Create a profile URL */
+//     let profile = `${process.env.CLIENT_URL}/profile/${username}`;
+
+//     /**
+//      * Create a short instance of a new user to save into the schema
+//      * @arg { String } name - name from request body
+//      * @arg { String } email - email from request body
+//      * @arg { String } password - password from request body
+//      * @arg { String } profile - created profile URL
+//      * @arg { String } username  - generated username
+//      */
+//     let newUser = new User({ name, email, password, profile, username });
+
+//     /**
+//      * Request Model save the new user
+//      * @return { Object } - the response body
+//      */
+//     newUser.save((err, success) => {
+//       /** Send error message if save failed */
+//       if (err || !success) {
+//         return res.status(400).json({
+//           error: err,
+//         });
+//       }
+
+//       /** Send success message if no error */
+//       res.json({
+//         message: "Signup success! Please signin.",
+//       });
+//     });
+//   });
+// };
+
 exports.signup = (req, res) => {
-  /**
-   * Request Model query one user
-   * @param { MongooseFilterQuery } email - email from the request body
-   * @return { Object } - the response body
-   */
-  User.findOne({ email: req.body.email }).exec((err, user) => {
-    /** Send a error message if user exist */
-    if (user) {
-      return res.status(400).json({
-        error: "Email is taken",
-      });
-    }
+  const token = req.body.token;
 
-    /** Destructuring request body to grab user information */
-    const { name, email, password } = req.body;
-
-    /** Generate a unique username */
-    let username = shortId.generate();
-
-    /** Create a profile URL */
-    let profile = `${process.env.CLIENT_URL}/profile/${username}`;
-
-    /**
-     * Create a short instance of a new user to save into the schema
-     * @arg { String } name - name from request body
-     * @arg { String } email - email from request body
-     * @arg { String } password - password from request body
-     * @arg { String } profile - created profile URL
-     * @arg { String } username  - generated username
-     */
-    let newUser = new User({ name, email, password, profile, username });
-
-    /**
-     * Request Model save the new user
-     * @return { Object } - the response body
-     */
-    newUser.save((err, success) => {
-      /** Send error message if save failed */
-      if (err || !success) {
-        return res.status(400).json({
-          error: err,
+  if(token) {
+    jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, function(err, decoded) {
+      if(err) {
+        return res.status(401).json({
+          error: "Expired link. Signup again"
         });
-      }
+      };
 
-      /** Send success message if no error */
-      res.json({
-        message: "Signup success! Please signin.",
+      /** Destructuring jwt token */
+      const { name, email, password } = jwt.decode(token);
+
+      /** Generate a unique username */
+      let username = shortId.generate();
+
+      /** Create a profile URL */
+      let profile = `${process.env.CLIENT_URL}/profile/${username}`;
+
+      const user= new User({name, email, password, profile, username});
+
+      user.save((err, user) => {
+        if(err) {
+          return res.status(401).json({
+            error: errorHandler(err)
+          });
+        };
+
+        return res.json({
+          message: "Signup success! Please signin."
+        });
       });
     });
-  });
+  } else {
+    return res.json({
+      message: "Something went wrong. Try again."
+    });
+  };
 };
 
 /**
