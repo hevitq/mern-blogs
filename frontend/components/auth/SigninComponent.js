@@ -181,7 +181,8 @@ const SigninComponent = () => {
       {showLoading()}
       {showError()}
       {showMessage()}
-      <LoginGoogle />
+      {/* NOTE: implemented but not use now */}
+      {/* <LoginGoogle /> */}
 
       {/* To hide the signin form when existing user data response */}
       {showForm && signinForm()}
