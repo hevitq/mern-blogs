@@ -27,8 +27,8 @@ const SigninComponent = () => {
    * @func { Func } setValues - Grab values as the user types and set to new state
    */
   const [values, setValues] = useState({
-    email: "hieuphong@gmail.com",
-    password: "123456",
+    email: "",
+    password: "",
     error: "",
     loading: false,
     message: "",
