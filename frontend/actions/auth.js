@@ -34,6 +34,59 @@ export const handleResponse = (response) => {
 };
 
 /**
+ * Method to make a request for activating an account
+ * @param { Object } user - user information passed to sent to the server side
+ */
+export const preSignup = (user) => {
+  /**
+   * One get user information will return fetch
+   * @argument { String } URL - API to connect to the server side to fetch data
+   * @argument { Object } Object - Configuration when fetching
+   * Refer: Fetch() method
+   * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+   * NOTE: Imagine process like run by Postman
+   */
+  return fetch(`${API}/pre-signup`, {
+    /**
+     * Config Method
+     * Method for sending data from the client to the server
+     */
+    method: "POST",
+
+    /**
+     * Configure Headers
+     * Notify to the server only accept with application/json data
+     * and the client only receive Content-Type: application/json data
+     */
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+
+    /**
+     * Configure Body
+     * Converting the user object json to a json string
+     * and sending it to the server from the user information on the input form
+     */
+    body: JSON.stringify(user)
+  })
+  /**
+   * Take response from the client,
+   * and give/bring it to the component SignupComponent by the method signup
+   * to handle the response
+   */
+  .then(response => {
+    /** Get the json response */
+    return response.json();
+  })
+  /**
+   * Catch any error coming from the backend when fetching
+   * such as validation, connection
+   */
+  .catch(err => console.log(err));
+};
+
+/**
  * Method to make a request for creating a new user
  * @param { Object } user - user information passed to sent to the server side
  */

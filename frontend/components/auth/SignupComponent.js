@@ -7,10 +7,12 @@
 import { useState, useEffect } from "react";
 
 /** Bring methods from ./actions/auth */
-import { signup, isAuth } from "../../actions/auth";
+import { signup, isAuth, preSignup } from "../../actions/auth";
 
 /** Bring Router from next */
 import Router from "next/router";
+
+import Link from "next/link";
 
 /**
  * Function to create a component (functional component)
@@ -77,7 +79,7 @@ const SignupComponent = () => {
      * and then get data response json from the server side
      * @param { Object } user - user information passed
      */
-    signup(user).then((data) => {
+    preSignup(user).then((data) => {
       /** Check data.error undefined as can't connect to the server */
       if (data && data.error) {
         setValues({ ...values, error: data.error, loading: false });

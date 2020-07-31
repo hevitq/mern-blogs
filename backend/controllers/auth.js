@@ -32,6 +32,51 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 // ? Request View to draw.
 ////////////////////////////////////////////////////////////////////////////////
 
+exports.preSignup =(req, res) => {
+  const { name, email, password } = req.body;
+
+  User.findOne({email: email.toLowerCase()}, (err, user) => {
+    if(user) {
+      return res.status(400).json({
+        error: "Email is taken"
+      });
+    };
+
+    const token = jwt.sign(
+      { name, email, password },
+      process.env.JWT_ACCOUNT_ACTIVATION,
+      {
+        expiresIn: "10m",
+      }
+    );
+
+    const emailData = {
+      from: process.env.EMAIL_FROM,
+      to: email,
+      subject: `Account activation link`,
+      html: `
+        <p>Please use the following link to activate your account</p>
+        <p>${process.env.CLIENT_URL}/auth/account/activate/${token}</p>
+        <hr />
+        <p>This email may contain sensitive information</p>
+        <p>https://vnpace.dev</p>
+      `,
+    };
+
+    sgMail
+      .send(emailData)
+      .then((sent) => {
+        return res.json({
+          message: `Email has been sent to ${email}. Follow the instructions to activate your account. Link expires in 10 minutes.`,
+        });
+      })
+      .catch((error) => {
+        console.log(error.response.body);
+      });
+
+  });
+};
+
 /**
  * Middleware to handle when the user signup
  * @param { Any } req - request from the client side application
