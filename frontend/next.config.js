@@ -35,5 +35,6 @@ module.exports = {
     DOMAIN_DEVELOPMENT: "http://localhost:3000",
     DOMAIN_PRODUCTION: "https://vnpace.dev",
     FB_APP_ID: "745690912856073",
+    GOOGLE_CLIENT_ID: "1025735520817-oo066d4p4sr1jv7hs57oj8116rc7u2ho.apps.googleusercontent.com",
   }
 };

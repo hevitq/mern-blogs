@@ -16,6 +16,8 @@ import Router from "next/router";
 
 import Link from "next/link";
 
+import LoginGoogle from "./LoginWithGoogle";
+
 /**
  * Function to create a component (functional component)
  * @return Signin Form
@@ -27,8 +29,8 @@ const SigninComponent = () => {
    * @func { Func } setValues - Grab values as the user types and set to new state
    */
   const [values, setValues] = useState({
-    email: "hieuphong@gmail.com",
-    password: "123456",
+    email: "",
+    password: "",
     error: "",
     loading: false,
     message: "",
@@ -179,6 +181,7 @@ const SigninComponent = () => {
       {showLoading()}
       {showError()}
       {showMessage()}
+      <LoginGoogle />
 
       {/* To hide the signin form when existing user data response */}
       {showForm && signinForm()}

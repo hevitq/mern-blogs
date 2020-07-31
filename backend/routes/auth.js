@@ -23,7 +23,15 @@ const { runValidation } = require("../validators");
 const { requireSignIn } = require("../controllers/auth");
 
 /** Middleware to handle request and response related to the blog */
-const { signup, signin, signout, forgotPassword, resetPassword, preSignup } = require("../controllers/auth");
+const {
+  signup,
+  signin,
+  signout,
+  forgotPassword,
+  resetPassword,
+  preSignup,
+  googleLogin,
+} = require("../controllers/auth");
 
 ////////////////////////////////////////////////////////////////////////////////
 // !--------------------------APPLY MIDDLEWARE----------------------------------
@@ -39,13 +47,24 @@ router.post("/pre-signup", userSignUpValidator, runValidation, preSignup);
 router.post("/signup", signup);
 router.post("/signin", userSignInValidator, runValidation, signin);
 router.get("/signout", signout);
-router.put("/forgot-password", forgotPasswordValidator, runValidation, forgotPassword);
-router.put("/reset-password", resetPasswordValidator, runValidation, resetPassword);
+router.put(
+  "/forgot-password",
+  forgotPasswordValidator,
+  runValidation,
+  forgotPassword
+);
+router.put(
+  "/reset-password",
+  resetPasswordValidator,
+  runValidation,
+  resetPassword
+);
+router.post("/google-login", googleLogin);
 
 router.get("/secret", requireSignIn, (req, res) => {
   res.json({
     user: req.user,
-    message: "Router for testing authentication"
+    message: "Router for testing authentication",
   });
 });
 
