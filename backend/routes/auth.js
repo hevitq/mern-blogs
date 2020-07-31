@@ -59,7 +59,8 @@ router.put(
   runValidation,
   resetPassword
 );
-router.post("/google-login", googleLogin);
+// NOTE: Implemented but not use in this time
+// router.post("/google-login", googleLogin);
 
 router.get("/secret", requireSignIn, (req, res) => {
   res.json({
