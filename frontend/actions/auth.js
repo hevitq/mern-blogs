@@ -507,7 +507,7 @@ export const forgotPassword = (email) => {
 };
 
 /**
- * Method to make a request for forgetting password
+ * Method to make a request for resetting password
  * @param { Object } resetInfo - info passed to sent to the server side
  */
 export const resetPassword = (resetInfo) => {
@@ -542,6 +542,59 @@ export const resetPassword = (resetInfo) => {
      * NOTE: if use ({restInfo}) instead of (restInfo) will error Invalid value
      */
     body: JSON.stringify(resetInfo)
+  })
+  /**
+   * Take response from the server side,
+   * and give/bring it to the component SignupComponent by the method signup
+   * to handle the response
+   */
+  .then(response => {
+    /** Get the json response */
+    return response.json();
+  })
+  /**
+   * Catch any error coming from the backend when fetching
+   * such as validation, connection
+   */
+  .catch(err => console.log(err));
+};
+
+/**
+ * Method to make a request for login with Google
+ * @param { Object } resetInfo - info passed to sent to the server side
+ */
+export const loginWithGoogle = (user) => {
+  /**
+   * Once get user information will return fetch
+   * @arg { String } URL - API to connect to the server side to fetch data
+   * @arg { Object } Object - Configuration when fetching
+   * Refer: Fetch() method
+   * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+   * NOTE: Imagine process like run by Postman
+   */
+  return fetch(`${API}/google-login`, {
+    /**
+     * Config Method
+     * Method for sending data from the client to the server
+     */
+    method: "POST",
+
+    /**
+     * Configure Headers
+     * Notify to the server only accept with Content-Type: application/json
+     */
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+
+    /**
+     * Configure Body
+     * Converting the user object json to a json string
+     * and sending it to the server from the user information on the input form
+     * NOTE: if use ({restInfo}) instead of (restInfo) will error Invalid value
+     */
+    body: JSON.stringify(user)
   })
   /**
    * Take response from the server side,

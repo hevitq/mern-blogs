@@ -27,3 +27,6 @@ export const DOMAIN = publicRuntimeConfig.PRODUCTION
 
 /** Config FB APP */
 export const FB_APP_ID = publicRuntimeConfig.FB_APP_ID;
+
+/** Config to connect with Google */
+export const GOOGLE_CLIENT_ID = publicRuntimeConfig.GOOGLE_CLIENT_ID;

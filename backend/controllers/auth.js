@@ -472,21 +472,22 @@ exports.resetPassword = (req, res) => {
   }
 };
 
+/**
+ * NOTE Need enable third-party cookies
+ * Setting > Privacy and security > Cookies and other site data > Allow all cookies
+ */
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-
 exports.googleLogin = (req, res) => {
   const idToken = req.body.tokenId;
   client
     .verifyIdToken({ idToken, audience: process.env.GOOGLE_CLIENT_ID })
     .then((response) => {
-      // console.log(response)
-      const { email_verified, name, email, jti } = response && response.payload;
+      const { email_verified, name, email, jti } = response.payload;
       if (email_verified) {
         User.findOne({ email }).exec((err, user) => {
-          if(user) {
-            // console.log(user)
+          if (user) {
             const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-              expiresIn: "1",
+              expiresIn: "1d",
             });
             res.cookie("token", token, { expiresIn: "1d" });
             const { _id, email, name, role, username } = user;
@@ -495,33 +496,34 @@ exports.googleLogin = (req, res) => {
               user: { _id, email, name, role, username },
             });
           } else {
-              let username = shortid.generate();
-              let profile = `${process.env.CLIENT_URL}/profile/${username}`;
-              let password = jti;
-              user = new User({name, email, profile, username, password});
-              user.save((err, data) => {
-                if(!data || err) {
-                  return res.status(400).json({
-                    error: errorHandler(err)
-                  });
-                };
-      
-                const token = jwt.sign({ _id: data._id }, process.env.JWT_SECRET, {
-                  expiresIn: "1",
+            let username = shortId.generate();
+            let profile = `${process.env.CLIENT_URL}/profile/${username}`;
+            let password = jti;
+            user = new User({ name, email, profile, username, password });
+            user.save((err, data) => {
+              if (err) {
+                return res.status(400).json({
+                  error: errorHandler(err),
                 });
-                res.cookie("token", token, { expiresIn: "1d" });
-                const { _id, email, name, role, username } = data;
-                return res.json({
-                  token,
-                  user: { _id, email, name, role, username },
-                });
+              }
+              const token = jwt.sign(
+                { _id: data._id },
+                process.env.JWT_SECRET,
+                { expiresIn: "1d" }
+              );
+              res.cookie("token", token, { expiresIn: "1d" });
+              const { _id, email, name, role, username } = data;
+              return res.json({
+                token,
+                user: { _id, email, name, role, username },
               });
-          };
+            });
+          }
         });
       } else {
         return res.status(400).json({
-          error: "Google login failed. Try again."
+          error: "Google login failed. Try again.",
         });
-      };
+      }
     });
 };
