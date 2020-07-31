@@ -23,7 +23,7 @@ const { runValidation } = require("../validators");
 const { requireSignIn } = require("../controllers/auth");
 
 /** Middleware to handle request and response related to the blog */
-const { signup, signin, signout, forgotPassword, resetPassword } = require("../controllers/auth");
+const { signup, signin, signout, forgotPassword, resetPassword, preSignup } = require("../controllers/auth");
 
 ////////////////////////////////////////////////////////////////////////////////
 // !--------------------------APPLY MIDDLEWARE----------------------------------
@@ -35,7 +35,8 @@ const { signup, signin, signout, forgotPassword, resetPassword } = require("../c
  * @arg { Array } userSignInValidator - validator set when signing in
  * @arg { Func } runValidation - run validation for validator sets
  */
-router.post("/signup", userSignUpValidator, runValidation, signup);
+router.post("/pre-signup", userSignUpValidator, runValidation, preSignup);
+router.post("/signup", signup);
 router.post("/signin", userSignInValidator, runValidation, signin);
 router.get("/signout", signout);
 router.put("/forgot-password", forgotPasswordValidator, runValidation, forgotPassword);
