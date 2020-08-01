@@ -18,7 +18,7 @@ const Blogs = ({ blogs, categories, tags, totalBlogs, blogsLimit, blogSkip, rout
   const head = () => {
     return (
       <Head>
-        <title>Programming blogs | {APP_NAME}</title>
+        <title>Just Developer Blogs | {APP_NAME}</title>
         <meta
           name="description"
           content="Programming blogs and tutorials on react node next vue php and web development"
@@ -146,7 +146,7 @@ const Blogs = ({ blogs, categories, tags, totalBlogs, blogsLimit, blogSkip, rout
             <div className="col-md-12 pt-3"></div>
             <header>
               <h1 className="display-4 font-weight-bold text-center">
-                Programing blogs and tutorials
+                Just Developer Blogs
               </h1>
               <section>
                 {/* Render all categories and tags */}

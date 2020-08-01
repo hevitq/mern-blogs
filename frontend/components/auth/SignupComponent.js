@@ -25,9 +25,9 @@ const SignupComponent = () => {
    * @method { Function } setValues - Grab values as the user types and set to new state
    */
   const [values, setValues] = useState({
-    name: "hieuphong",
-    email: "hieuphong@gmail.com",
-    password: "123456",
+    name: "",
+    email: "",
+    password: "",
     error: "",
     loading: false,
     message: "",
@@ -167,7 +167,7 @@ const SignupComponent = () => {
         </div>
 
         <div>
-          <button className="btn btn-primary">Signup</button>
+          <button className="btn btn-primary">Sign up</button>
         </div>
       </form>
     );
