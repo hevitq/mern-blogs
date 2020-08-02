@@ -22,6 +22,9 @@ package-lock.json
 .next
 next-config.js
 
+# .env file
+*.env
+
 # Logs
 logs
 *.log
